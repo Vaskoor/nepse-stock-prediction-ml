@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBL MAX PROFIT - Stock Prediction System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0F1117',
+                            800: '#1A1D2E',
+                            700: '#242838',
+                            600: '#2E3348',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1A1D2E; }
+        ::-webkit-scrollbar-thumb { background: #4FC3F7; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #29B6F6; }
+
+        /* Drag and drop area */
+        .drop-zone.dragover {
+            border-color: #4FC3F7;
+            background-color: rgba(79, 195, 247, 0.05);
+        }
+
+        /* Pulse animation for predictions */
+        @keyframes pulse-buy { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4); } 50% { box-shadow: 0 0 20px 5px rgba(0, 230, 118, 0.2); } }
+        @keyframes pulse-sell { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.4); } 50% { box-shadow: 0 0 20px 5px rgba(255, 82, 82, 0.2); } }
+        .pulse-buy { animation: pulse-buy 2s infinite; }
+        .pulse-sell { animation: pulse-sell 2s infinite; }
+
+        /* Slider styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 4px;
+            background: #2E3348;
+            border-radius: 2px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4FC3F7;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Table styles */
+        .pred-table tbody tr:hover {
+            background-color: rgba(79, 195, 247, 0.08);
+        }
+    </style>
+</head>
+<body class="h-full bg-dark-900 text-gray-200 font-sans">
+
+    <div class="flex h-full">
+
+        <!-- ================================================================== -->
+        <!-- SIDEBAR -->
+        <!-- ================================================================== -->
+        <aside id="sidebar" class="w-80 min-w-[320px] bg-dark-800 border-r border-dark-600 flex flex-col overflow-y-auto">
+
+            <!-- Logo / Title -->
+            <div class="p-5 border-b border-dark-600">
+                <h1 class="text-lg font-bold text-cyan-400 tracking-wide">NBL MAX PROFIT</h1>
+                <p class="text-xs text-gray-500 mt-1">Stock Prediction System v5.2</p>
+            </div>
+
+            <!-- Model Status -->
+            <div class="px-5 py-3 border-b border-dark-600">
+                <div class="flex items-center gap-2">
+                    {% if model_loaded %}
+                    <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                    <span class="text-xs text-green-400">Model Loaded</span>
+                    {% else %}
+                    <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                    <span class="text-xs text-red-400">Model Not Loaded</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div class="p-5 flex-1 space-y-5">
+                <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Configuration</h2>
+
+                <!-- Target Horizon -->
+                <div>
+                    <label class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>Target Horizon (days)</span>
+                        <span id="horizon-val" class="text-cyan-400 font-mono">{{ config.target_horizon }}</span>
+                    </label>
+                    <input type="range" id="target_horizon" name="target_horizon"
+                           min="3" max="20" step="1" value="{{ config.target_horizon }}"
+                           class="w-full" oninput="document.getElementById('horizon-val').textContent=this.value">
+                    <div class="flex justify-between text-[10px] text-gray-600 mt-0.5">
+                        <span>3</span><span>20</span>
+                    </div>
+                </div>
+
+                <!-- Target Threshold -->
+                <div>
+                    <label class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>Min Move Threshold (%)</span>
+                        <span id="threshold-val" class="text-cyan-400 font-mono">{{ config.target_threshold | round(1) }}</span>
+                    </label>
+                    <input type="range" id="target_threshold" name="target_threshold"
+                           min="0.5" max="5.0" step="0.1" value="{{ config.target_threshold }}"
+                           class="w-full" oninput="document.getElementById('threshold-val').textContent=parseFloat(this.value).toFixed(1)">
+                    <div class="flex justify-between text-[10px] text-gray-600 mt-0.5">
+                        <span>0.5%</span><span>5.0%</span>
+                    </div>
+                </div>
+
+                <hr class="border-dark-600">
+
+                <!-- Buy Threshold -->
+                <div>
+                    <label class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>Buy Threshold (%)</span>
+                        <span id="buy-val" class="text-green-400 font-mono">{{ config.buy_threshold | round(1) }}</span>
+                    </label>
+                    <input type="range" id="buy_threshold" name="buy_threshold"
+                           min="50" max="70" step="0.5" value="{{ config.buy_threshold }}"
+                           class="w-full" oninput="document.getElementById('buy-val').textContent=parseFloat(this.value).toFixed(1)">
+                    <div class="flex justify-between text-[10px] text-gray-600 mt-0.5">
+                        <span>50%</span><span>70%</span>
+                    </div>
+                </div>
+
+                <!-- Sell Threshold -->
+                <div>
+                    <label class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>Sell Threshold (%)</span>
+                        <span id="sell-val" class="text-red-400 font-mono">{{ config.sell_threshold | round(1) }}</span>
+                    </label>
+                    <input type="range" id="sell_threshold" name="sell_threshold"
+                           min="20" max="50" step="0.5" value="{{ config.sell_threshold }}"
+                           class="w-full" oninput="document.getElementById('sell-val').textContent=parseFloat(this.value).toFixed(1)">
+                    <div class="flex justify-between text-[10px] text-gray-600 mt-0.5">
+                        <span>20%</span><span>50%</span>
+                    </div>
+                </div>
+
+                <hr class="border-dark-600">
+
+                <!-- Fee Percentage -->
+                <div>
+                    <label class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>Brokerage Fee (%)</span>
+                        <span id="fee-val" class="text-yellow-400 font-mono">{{ config.fee_pct | round(2) }}</span>
+                    </label>
+                    <input type="range" id="fee_pct" name="fee_pct"
+                           min="0.0" max="1.0" step="0.05" value="{{ config.fee_pct }}"
+                           class="w-full" oninput="document.getElementById('fee-val').textContent=parseFloat(this.value).toFixed(2)">
+                    <div class="flex justify-between text-[10px] text-gray-600 mt-0.5">
+                        <span>0%</span><span>1%</span>
+                    </div>
+                </div>
+
+                <hr class="border-dark-600">
+
+                <!-- Info Box -->
+                <div class="bg-dark-700 rounded-lg p-3 text-xs text-gray-500 space-y-1.5">
+                    <p><span class="text-cyan-400">Model:</span> Ensemble (RF + GB + XGB + LR)</p>
+                    <p><span class="text-cyan-400">Scaler:</span> RobustScaler</p>
+                    <p><span class="text-cyan-400">Features:</span> 27 curated</p>
+                    <p><span class="text-cyan-400">Target:</span> Triple-Barrier Labeling</p>
+                </div>
+            </div>
+
+            <!-- CSV Format Info -->
+            <div class="p-5 border-t border-dark-600">
+                <p class="text-[10px] text-gray-600 leading-relaxed">
+                    <strong class="text-gray-500">Required CSV columns:</strong><br>
+                    Date, Open, High, Low, Close, Volume
+                </p>
+            </div>
+        </aside>
+
+        <!-- ================================================================== -->
+        <!-- MAIN CONTENT -->
+        <!-- ================================================================== -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Bar -->
+            <header class="bg-dark-800 border-b border-dark-600 px-6 py-3 flex items-center justify-between">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-200">Stock Direction Prediction</h2>
+                    <p class="text-xs text-gray-500">Upload OHLCV data to get BUY / SELL / WAIT signals</p>
+                </div>
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-gray-400 hover:text-cyan-400" onclick="toggleSidebar()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </header>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                <!-- Upload Section -->
+                <div id="upload-section">
+                    <div id="drop-zone" class="drop-zone border-2 border-dashed border-dark-600 rounded-xl p-10 text-center cursor-pointer hover:border-cyan-400/50 transition-colors"
+                         onclick="document.getElementById('csv-input').click()">
+                        <input type="file" id="csv-input" accept=".csv" class="hidden" onchange="handleFileSelect(this)">
+                        <div class="space-y-3">
+                            <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-sm text-gray-400">
+                                <span class="text-cyan-400 font-medium">Click to upload</span> or drag & drop CSV file
+                            </p>
+                            <p class="text-xs text-gray-600">Must contain: Date, Open, High, Low, Close, Volume</p>
+                        </div>
+                    </div>
+                    <!-- Selected file info -->
+                    <div id="file-info" class="hidden mt-3 bg-dark-800 rounded-lg p-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <span id="file-name" class="text-sm text-gray-300"></span>
+                        </div>
+                        <button onclick="clearFile()" class="text-xs text-gray-500 hover:text-red-400 transition-colors">Remove</button>
+                    </div>
+                </div>
+
+                <!-- Predict Button -->
+                <button id="predict-btn" onclick="runPrediction()"
+                        class="w-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 py-3 rounded-lg font-medium
+                               hover:bg-cyan-500/20 hover:border-cyan-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                        disabled>
+                    <span id="predict-text">Run Prediction</span>
+                    <span id="predict-spinner" class="hidden">
+                        <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                </button>
+
+                <!-- Error Message -->
+                <div id="error-box" class="hidden bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <p class="text-sm text-red-400" id="error-text"></p>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-section" class="hidden space-y-6">
+
+                    <!-- Latest Prediction Card -->
+                    <div id="latest-card" class="rounded-xl p-6 border">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Latest Signal</p>
+                                <h3 id="latest-action" class="text-3xl font-bold"></h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500">Confidence (UP)</p>
+                                <p id="latest-prob" class="text-2xl font-mono font-bold"></p>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div class="bg-dark-900/50 rounded-lg p-3">
+                                <p class="text-[10px] text-gray-500 uppercase">Date</p>
+                                <p id="latest-date" class="text-sm font-mono text-gray-300 mt-0.5"></p>
+                            </div>
+                            <div class="bg-dark-900/50 rounded-lg p-3">
+                                <p class="text-[10px] text-gray-500 uppercase">Close Price</p>
+                                <p id="latest-close" class="text-sm font-mono text-gray-300 mt-0.5"></p>
+                            </div>
+                            <div class="bg-dark-900/50 rounded-lg p-3">
+                                <p class="text-[10px] text-gray-500 uppercase">Horizon</p>
+                                <p id="latest-horizon" class="text-sm font-mono text-gray-300 mt-0.5"></p>
+                            </div>
+                            <div class="bg-dark-900/50 rounded-lg p-3">
+                                <p class="text-[10px] text-gray-500 uppercase">Min Move</p>
+                                <p id="latest-threshold" class="text-sm font-mono text-gray-300 mt-0.5"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signal Distribution -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500 uppercase">Buy Signals</p>
+                                <span class="text-green-400 text-xl font-bold" id="buy-count">0</span>
+                            </div>
+                            <div class="mt-2 h-1.5 bg-dark-600 rounded-full overflow-hidden">
+                                <div id="buy-bar" class="h-full bg-green-400 rounded-full transition-all" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500 uppercase">Sell Signals</p>
+                                <span class="text-red-400 text-xl font-bold" id="sell-count">0</span>
+                            </div>
+                            <div class="mt-2 h-1.5 bg-dark-600 rounded-full overflow-hidden">
+                                <div id="sell-bar" class="h-full bg-red-400 rounded-full transition-all" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-dark-800 rounded-xl p-5 border border-dark-600">
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500 uppercase">Wait Signals</p>
+                                <span class="text-yellow-400 text-xl font-bold" id="wait-count">0</span>
+                            </div>
+                            <div class="mt-2 h-1.5 bg-dark-600 rounded-full overflow-hidden">
+                                <div id="wait-bar" class="h-full bg-yellow-400 rounded-full transition-all" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Predictions Table -->
+                    <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
+                        <div class="px-5 py-3 border-b border-dark-600 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-300">Recent Predictions (last 50 rows)</h3>
+                            <span id="table-file" class="text-xs text-gray-500"></span>
+                        </div>
+                        <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+                            <table class="pred-table w-full text-sm">
+                                <thead class="bg-dark-700 sticky top-0">
+                                    <tr class="text-xs text-gray-500 uppercase">
+                                        <th class="px-4 py-2.5 text-left">Date</th>
+                                        <th class="px-4 py-2.5 text-right">Close</th>
+                                        <th class="px-4 py-2.5 text-right">Probability</th>
+                                        <th class="px-4 py-2.5 text-center">Signal</th>
+                                        <th class="px-4 py-2.5 text-right">Confidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pred-tbody" class="divide-y divide-dark-700">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- JavaScript -->
+    <!-- ================================================================== -->
+    <script>
+        let selectedFile = null;
+
+        // --- Drag and Drop ---
+        const dropZone = document.getElementById('drop-zone');
+
+        ['dragenter', 'dragover'].forEach(evt => {
+            dropZone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(evt => {
+            dropZone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+        });
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].name.toLowerCase().endsWith('.csv')) {
+                selectedFile = files[0];
+                showFileInfo(files[0].name);
+            }
+        });
+
+        function handleFileSelect(input) {
+            if (input.files.length > 0) {
+                selectedFile = input.files[0];
+                showFileInfo(input.files[0].name);
+            }
+        }
+
+        function showFileInfo(name) {
+            document.getElementById('file-info').classList.remove('hidden');
+            document.getElementById('file-name').textContent = name;
+            document.getElementById('predict-btn').disabled = false;
+            document.getElementById('error-box').classList.add('hidden');
+        }
+
+        function clearFile() {
+            selectedFile = null;
+            document.getElementById('csv-input').value = '';
+            document.getElementById('file-info').classList.add('hidden');
+            document.getElementById('predict-btn').disabled = true;
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        // --- Prediction ---
+        async function runPrediction() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('predict-btn');
+            const btnText = document.getElementById('predict-text');
+            const spinner = document.getElementById('predict-spinner');
+            const errorBox = document.getElementById('error-box');
+
+            btn.disabled = true;
+            btnText.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            errorBox.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('csv_file', selectedFile);
+            formData.append('target_horizon', document.getElementById('target_horizon').value);
+            formData.append('target_threshold', document.getElementById('target_threshold').value);
+            formData.append('buy_threshold', document.getElementById('buy_threshold').value);
+            formData.append('sell_threshold', document.getElementById('sell_threshold').value);
+            formData.append('fee_pct', document.getElementById('fee_pct').value);
+
+            try {
+                const resp = await fetch('/predict', { method: 'POST', body: formData });
+                const data = await resp.json();
+
+                if (!resp.ok || data.error) {
+                    throw new Error(data.error || 'Prediction failed');
+                }
+
+                displayResults(data);
+
+            } catch (err) {
+                errorBox.classList.remove('hidden');
+                document.getElementById('error-text').textContent = err.message;
+            } finally {
+                btn.disabled = false;
+                btnText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // --- Display Results ---
+        function displayResults(data) {
+            const results = document.getElementById('results-section');
+            results.classList.remove('hidden');
+
+            const summary = data.summary;
+            const latest = summary.latest_prediction;
+
+            // Latest card
+            const card = document.getElementById('latest-card');
+            const action = latest.action;
+            card.className = 'rounded-xl p-6 border ';
+            if (action === 'BUY') {
+                card.className += 'bg-green-500/5 border-green-500/30 pulse-buy';
+                document.getElementById('latest-action').className = 'text-3xl font-bold text-green-400';
+            } else if (action === 'SELL') {
+                card.className += 'bg-red-500/5 border-red-500/30 pulse-sell';
+                document.getElementById('latest-action').className = 'text-3xl font-bold text-red-400';
+            } else {
+                card.className += 'bg-yellow-500/5 border-yellow-500/30';
+                document.getElementById('latest-action').className = 'text-3xl font-bold text-yellow-400';
+            }
+
+            document.getElementById('latest-action').textContent = action;
+            document.getElementById('latest-prob').textContent = latest.probability.toFixed(1) + '%';
+            document.getElementById('latest-prob').className = 'text-2xl font-mono font-bold ' +
+                (latest.probability > 50 ? 'text-green-400' : 'text-red-400');
+            document.getElementById('latest-date').textContent = latest.date;
+            document.getElementById('latest-close').textContent = latest.close !== null ? 'Rs. ' + latest.close.toFixed(2) : '-';
+            document.getElementById('latest-horizon').textContent = summary.target_horizon + ' days';
+            document.getElementById('latest-threshold').textContent = (summary.target_threshold * 100).toFixed(1) + '%';
+
+            // Signal distribution
+            const total = summary.total_rows;
+            document.getElementById('buy-count').textContent = summary.buy_signals;
+            document.getElementById('sell-count').textContent = summary.sell_signals;
+            document.getElementById('wait-count').textContent = summary.wait_signals;
+            document.getElementById('buy-bar').style.width = (summary.buy_signals / total * 100) + '%';
+            document.getElementById('sell-bar').style.width = (summary.sell_signals / total * 100) + '%';
+            document.getElementById('wait-bar').style.width = (summary.wait_signals / total * 100) + '%';
+
+            // Table
+            document.getElementById('table-file').textContent = data.filename;
+            const tbody = document.getElementById('pred-tbody');
+            tbody.innerHTML = '';
+
+            // Show rows in reverse (most recent first)
+            const predictions = [...data.predictions].reverse();
+            predictions.forEach(row => {
+                const tr = document.createElement('tr');
+
+                let signalClass, signalBg;
+                if (row.action === 'BUY') {
+                    signalClass = 'text-green-400';
+                    signalBg = 'bg-green-500/10';
+                } else if (row.action === 'SELL') {
+                    signalClass = 'text-red-400';
+                    signalBg = 'bg-red-500/10';
+                } else {
+                    signalClass = 'text-yellow-400';
+                    signalBg = 'bg-yellow-500/10';
+                }
+
+                tr.innerHTML = `
+                    <td class="px-4 py-2 font-mono text-xs text-gray-400">${row.date}</td>
+                    <td class="px-4 py-2 text-right font-mono text-xs text-gray-300">${row.close !== null ? row.close.toFixed(2) : '-'}</td>
+                    <td class="px-4 py-2 text-right font-mono text-xs ${row.probability > 50 ? 'text-green-400' : 'text-red-400'}">${row.probability.toFixed(1)}%</td>
+                    <td class="px-4 py-2 text-center">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${signalClass} ${signalBg}">${row.action}</span>
+                    </td>
+                    <td class="px-4 py-2 text-right font-mono text-xs text-gray-500">${row.confidence_margin.toFixed(1)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // --- Sidebar Toggle (mobile) ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('fixed');
+            sidebar.classList.toggle('inset-y-0');
+            sidebar.classList.toggle('left-0');
+            sidebar.classList.toggle('z-50');
+        }
+    </script>
+</body>
+</html>

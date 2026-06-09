@@ -1,0 +1,1160 @@
+
+%KECReportFormat.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DO NOT MAKE CHANGES IN THIS FILE
+
+\documentclass[12pt, a4paper]{report}
+\usepackage[left = 1.25in, right = 1in, top = 1in, bottom = 1in]{geometry}%for margin
+\usepackage{amsfonts, amsmath, amssymb} %for mathematical equations
+\usepackage{graphicx} %for images
+\usepackage{times} %font Times New Roman Font
+\usepackage{float} %required if you use H(strictly here) position for floats
+\usepackage[skip = 8pt,tableposition=top, figureposition=bottom]{caption}%adjust spacing of captions and specify where captions are
+\usepackage{hyperref} % for easy Navigation in document, also puts links in TOC, LOF, LOT...
+\usepackage{setspace} %to change line spacing in some portion \singlespacing \onehalfspacing \doublespacing
+\usepackage{acro} % for List of Abbreviation and Symbol
+\acsetup{first-style = short} % set to display only short form on the command \ac{}
+
+%packages required for complex tables
+\usepackage{bigstrut} 
+\usepackage{multirow}
+\usepackage{polyglossia}
+\usepackage{fontspec}
+\usepackage{tabularx}
+
+
+\renewcommand{\contentsname}{Table of Contents} %Change TOC Heading ... default is "Contents" 
+
+\parindent 0pt	%removes the indent in paragraph
+\setlength{\parskip}{18pt}	%for paragraph spacing
+\renewcommand{\baselinestretch}{1.5} %Line Spacing = 1.5 line-spaces
+
+%to reduce spacing in sections
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{0pt}{0pt} %left, top, bottom spacings
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+\titlespacing*{\paragraph}{0pt}{0pt}{0pt}
+\titlespacing*{\subparagraph}{0pt}{0pt}{0pt}
+
+%adjust fontsizes\ of sections
+\titleformat*{\section}{\fontsize{14pt}{18pt}\bfseries}
+\titleformat*{\subsection}{\fontsize{13pt}{18pt}\bfseries}
+\titleformat*{\subsubsection}{\fontsize{12pt}{18pt}\bfseries}
+\titleformat*{\paragraph}{\fontsize{12pt}{18pt}\bfseries}
+\titleformat*{\subparagraph}{\fontsize{12pt}{18pt}\bfseries}
+
+%to reduce separation between points in list
+\usepackage{enumitem}
+\setlist[enumerate]{nosep} % no separation between items in enumerate
+\setlist[itemize]{nosep} % no separation between items in itemize
+%use \vspace{-18pt} before list to reduce paragraph spacing between list and preceeding paragraph.
+
+%Changes for Chapter Heading Spacing and formats for numbered chapters
+\makeatletter
+\def\@makechapterhead#1{%
+	%\vspace*{50pt}% 
+	{ \centering \MakeUppercase{\ifnum \c@secnumdepth >\m@ne
+			\fontsize{16pt}{1}\bfseries \@chapapp \space \thechapter \vspace{5pt}\\
+			\fi
+			\centering \interlinepenalty\@M
+			\bfseries #1}\par\nobreak
+		%\vskip 0pt
+}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%to adjust Heading spacings and fonts For unnumbered chapters, TOC, LOF ...
+\makeatletter
+% Redefine the \chapter* header macro to remove vertical space
+\def\@makeschapterhead#1{%
+	%\vspace*{50\p@}% Remove the vertical space
+	{\newpage \parindent \z@ \raggedright
+		\normalfont
+		\interlinepenalty\@M
+		\center \fontsize{16pt}{1} \bfseries \MakeUppercase{#1}\par\nobreak
+		%\vskip 18\p@ % adjust space after heading 18pt
+}}
+\makeatother 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%to make the "figure" and "table" word appear in the list of figures (lof) and list of tables (lot) respectively ...
+\makeatletter
+\newcommand{\mycaption}[2][\@empty]% #1 = short caption (optionl), #2 = caption
+{\refstepcounter\@captype
+	\caption@caption*{\csname fnum@\@captype\endcsname{: }#2}%
+	\ifx\@empty#1
+	\addcontentsline{\csname ext@\@captype\endcsname}{\@captype}%
+	{\csname\@captype name\endcsname\space\arabic{\@captype}: #2}%
+	\else
+	\addcontentsline{\csname ext@\@captype\endcsname}{\@captype}%
+	{\csname\@captype name\endcsname\space\arabic{\@captype}: #1}%
+	\fi
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+	\setmainfont{Times New Roman}	
+	\setmainlanguage{english} 
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{1em} % remove paragraph indentation
+
+% ═══════════════════════════════════════════════════════════
+%  TITLE PAGE
+% ═══════════════════════════════════════════════════════════
+
+		\begin{titlepage}
+		\centering
+		
+		{\Large \textbf{KANTIPUR ENGINEERING COLLEGE}}\\
+		\textbf{(Affiliated to Tribhuvan University, IOE)}\\
+		\textbf{Dhapakhel, Lalitpur}\\[0.4cm]
+		
+		\includegraphics[width=0.3\linewidth]{photos/KEC-College-logo-2-1}\\[0.4cm]
+		
+		{\large \textbf{SUBJECT CODE: [CT654]}}\\[0.8cm]
+		
+		{\LARGE \textbf{A MINOR PROJECT REPORT ON}}\\[0.8cm]
+		
+		{\LARGE \textbf{STOCK MARKET ANALYSIS}}\\
+		
+		\vspace{1cm}
+		\begin{center}
+			\begin{tabular}{lr}
+				\multicolumn{2}{c}{\textbf{SUBMITTED BY:}} \\[0.5em]
+				\textbf{\MakeUppercase{Ajay Kumar Yadav}} & \textbf{\MakeUppercase{[KAN079BCT007]}} \\
+				\textbf{\MakeUppercase{Bhaskar Kaphle}} & \textbf{\MakeUppercase{[KAN079BCT020]}} \\
+				\textbf{\MakeUppercase{Nicholas Neupane}} & \textbf{\MakeUppercase{[KAN079BCT044]}} \\
+			\end{tabular}
+		\end{center}
+		\vspace{1cm}
+		
+		\textbf{\MakeUppercase{A MINOR PROJECT SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENT FOR THE DEGREE OF}}\\
+		\textbf{\MakeUppercase{BACHELOR IN COMPUTER ENGINEERING}}\\[0.5cm]
+		
+		\textbf{\MakeUppercase{SUBMITTED TO:}}\\
+		\textbf{\MakeUppercase{Department of Computer and Electronics Engineering}}\\
+		\textbf{\MakeUppercase{KANTIPUR ENGINEERING COLLEGE}}\\
+		
+		\vfill	
+		\textbf{MARCH, 2026}
+		
+	\end{titlepage}
+	
+	% ═══════════════════════════════════════════════════════════
+	%  COVER PAGE
+	% ═══════════════════════════════════════════════════════════
+	\begin{titlepage}
+		\centering
+		
+		{\Large \textbf{KANTIPUR ENGINEERING COLLEGE}}\\
+		\textbf{(Affiliated to Tribhuvan University, IOE)}\\
+		\textbf{Dhapakhel, Lalitpur}\\[0.4cm]
+		
+		{\large \textbf{SUBJECT CODE: [CT654]}}\\[0.8cm]
+		\vspace{4 cm}
+		
+		{\LARGE \textbf{A MINOR PROJECT REPORT ON}}\\[0.8cm]
+		
+		{\LARGE \textbf{STOCK MARKET ANALYSIS}}\\
+		
+		\vspace{1cm}
+		\begin{center}
+			\begin{tabular}{lr}
+				\multicolumn{2}{c}{\textbf{SUBMITTED BY:}} \\[0.5em]
+				\textbf{\MakeUppercase{Ajay Kumar Yadav}} & \textbf{\MakeUppercase{[KAN079BCT007]}} \\
+				\textbf{\MakeUppercase{Bhaskar Kaphle}} & \textbf{\MakeUppercase{[KAN079BCT020]}} \\
+				\textbf{\MakeUppercase{Nicholas Neupane}} & \textbf{\MakeUppercase{[KAN079BCT044]}} \\
+			\end{tabular}
+		\end{center}
+		\vspace{1cm}
+		
+		\textbf{\MakeUppercase{A MINOR PROJECT SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENT FOR THE DEGREE OF}}\\
+		\textbf{\MakeUppercase{BACHELOR IN COMPUTER ENGINEERING}}\\[0.5cm]
+		
+		\textbf{\MakeUppercase{SUBMITTED TO:}}\\
+		\textbf{\MakeUppercase{Department of Computer and Electronics Engineering}}\\
+		\textbf{\MakeUppercase{KANTIPUR ENGINEERING COLLEGE}}\\
+		
+		\vfill	
+		\textbf{MARCH, 2026}
+		
+	\end{titlepage}
+	
+	% ═══════════════════════════════════════════════════════════
+	%  ABSTRACT
+	% ═══════════════════════════════════════════════════════════
+    \pagenumbering{roman}          % <-- MOVE IT HERE, before Abstract
+    \setcounter{page}{1}
+    
+	\chapter*{Abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
+	
+	Stock market prediction remains a challenging problem due to the inherently noisy, non-stationary, and complex nature of financial time-series data. This project presents a complete machine learning-based stock analysis system for the Nepal Stock Exchange (NEPSE), specifically targeting SANIMA Bank. The system engineers 50+ technical indicators from raw OHLCV (Open, High, Low, Close, Volume) data and selects a curated subset of 27 features (including price-normalized indicators for regime-invariance across different price levels). A Triple-Barrier target labeling methodology inspired by de Prado (2018) is employed to filter out ambiguous near-flat price movements, producing a cleaner binary classification target.
+	
+	The prediction model is a soft-voting ensemble combining Random Forest, Gradient Boosting, XGBoost, and Logistic Regression, trained using a novel two-stage strategy: Stage 1 trains on 75\% of data with 5-fold TimeSeriesSplit cross-validation, and Stage 2 refits on 87.5\% (train + validation) for final evaluation. RobustScaler is applied with strict leakage prevention (fit on training data only). The system achieves 57.97\% out-of-sample test accuracy with balanced precision and recall across both classes, and an ROC-AUC of 0.5696. Realistic backtesting on the test set with 0.3\% brokerage fees and ATR-based stop-loss yields a +32.94\% return with a Sharpe ratio of 2.856.
+	
+	An interactive web dashboard built with Flask and Tailwind CSS enables users to upload CSV data, configure prediction parameters, and receive actionable BUY/SELL/WAIT signals with confidence scores. The project demonstrates that rigorous application of ensemble machine learning with proper time-series validation can extract meaningful directional signals from NEPSE stock data.
+	
+	\textbf{Keywords:} Stock Market Prediction, Ensemble Machine Learning, NEPSE, Random Forest, XGBoost, Triple-Barrier Labeling, Technical Analysis, Flask Web Application
+	
+	% ═══════════════════════════════════════════════════════════
+	%  ACKNOWLEDGEMENT
+	% ═══════════════════════════════════════════════════════════
+	\chapter*{Acknowledgement}
+	\addcontentsline{toc}{chapter}{Acknowledgement}
+	
+	We would like to express our sincere gratitude to all those who contributed to the successful completion of this project.
+	
+	First and foremost, we would like to thank our project supervisor for their invaluable guidance, constructive feedback, and continuous encouragement throughout the development of this project. Their expertise in machine learning and data science helped shape the methodology and ensure academic rigor.
+	
+	We are grateful to the Department of Computer and Electronics Engineering, Kantipur Engineering College, for providing us with the academic environment and resources necessary to carry out this work. We also thank all the faculty members who taught us the foundational courses in programming, statistics, and artificial intelligence that made this project possible.
+	
+	We extend our appreciation to the developers and maintainers of the open-source tools and libraries used in this project (Python, scikit-learn, XGBoost, Pandas, NumPy, Matplotlib, and Flask), whose contributions to the scientific computing community are invaluable.
+	
+	Finally, we thank our families and friends for their patience, support, and understanding during the course of this project.
+	
+	\vspace{1.5cm}
+	\begin{flushright}
+		\textbf{--- The Project Team}\\
+		Kantipur Engineering College\\
+		March, 2026
+	\end{flushright}
+	
+	% ═══════════════════════════════════════════════════════════
+	%  TABLE OF CONTENTS, LIST OF FIGURES, LIST OF TABLES
+	% ═══════════════════════════════════════════════════════════
+	\tableofcontents
+	\renewcommand{\listfigurename}{List of Figures}
+	\listoffigures
+	\renewcommand{\listtablename}{List of Tables}
+	\listoftables
+	
+	% ═══════════════════════════════════════════════════════════
+	%  LIST OF ABBREVIATIONS
+	% ═══════════════════════════════════════════════════════════
+	\chapter*{List of Abbreviations}
+    \addcontentsline{toc}{chapter}{List of Abbreviations}
+	
+	\begin{tabular}{ll}
+		ADX & Average Directional Index \\
+		ATR & Average True Range \\
+		AUC & Area Under the Curve \\
+		CSS & Cascading Style Sheets \\
+		CSV & Comma-Separated Values \\
+		CV & Cross-Validation \\
+		EDA & Exploratory Data Analysis \\
+		EMA & Exponential Moving Average \\
+		EMH & Efficient Market Hypothesis \\
+		GBM & Gradient Boosting Machine \\
+		HTML & HyperText Markup Language \\
+		IQR & Interquartile Range \\
+		LR & Logistic Regression \\
+		MACD & Moving Average Convergence Divergence \\
+		MCC & Matthews Correlation Coefficient \\
+		ML & Machine Learning \\
+		NEPSE & Nepal Stock Exchange \\
+		OHLCV & Open, High, Low, Close, Volume \\
+		RF & Random Forest \\
+		ROC & Receiver Operating Characteristic \\
+		RSI & Relative Strength Index \\
+		SMA & Simple Moving Average \\
+		UI & User Interface \\
+		XGBoost & Extreme Gradient Boosting \\
+	\end{tabular}
+	\newpage
+	% ═══════════════════════════════════════════════════════════════
+	%  CHAPTER 1: INTRODUCTION
+	% ═══════════════════════════════════════════════════════════════
+	\pagenumbering{arabic}
+	\setcounter{page}{1}
+	\chapter{Introduction}
+	
+	\section{Background}
+	The stock market is one of the most complex and dynamic financial systems in the world. It represents a marketplace where shares of publicly listed companies are traded, providing both companies and investors with opportunities for capital growth. The movement of stock prices is influenced by a multitude of factors including company financial performance, macroeconomic indicators, investor sentiment, geopolitical events, regulatory changes, and market speculation. Predicting the direction of stock prices has been a subject of research for decades, spanning domains from traditional finance (Efficient Market Hypothesis, Random Walk Theory) to modern computational approaches using machine learning and artificial intelligence.
+	
+	In Nepal, the Nepal Stock Exchange (NEPSE) serves as the sole secondary market for the trading of securities. Established in 1993, NEPSE has witnessed rapid growth in participation, particularly among retail investors. As of recent years, the NEPSE index has experienced significant volatility, with bull-bear cycles driven by monetary policy decisions by Nepal Rastra Bank (NRB), changes in interest rates, corporate earnings announcements, and political events. Despite this growing participation, Nepali retail investors largely rely on informal analysis (word-of-mouth tips, social media speculation, and rudimentary chart reading), rather than systematic, data-driven methodologies.
+	
+	The field of machine learning (ML) has emerged as a powerful paradigm for stock market prediction. Unlike traditional statistical methods that assume linear relationships and stationary distributions, ML algorithms can capture complex non-linear patterns in historical price data. Research has demonstrated that ensemble methods (which combine multiple base learners to produce a stronger composite model), are particularly effective for financial prediction tasks, as they reduce overfitting, improve generalization, and handle the inherently noisy nature of financial time-series data \cite{patel2015, khaidem2016}.
+	
+	This project applies ensemble machine learning to predict the price direction of NEPSE-listed stocks, specifically focusing on the banking sector stock SANIMA Bank. The system engineers 50+ technical indicators from raw OHLCV (Open, High, Low, Close, Volume) data, applies a Triple-Barrier target labeling methodology inspired by de Prado \cite{deprado2018}, and trains a soft-voting ensemble of Random Forest, Gradient Boosting, XGBoost, and Logistic Regression classifiers to produce actionable trading signals.
+	
+	\section{Problem Statement}
+	Retail investors in Nepal face several critical challenges when making investment decisions in the NEPSE market:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Lack of Analytical Tools:\\
+		Unlike developed markets where investors have access to Bloomberg terminals, institutional research reports, and sophisticated trading platforms, NEPSE participants have limited access to systematic analysis tools. Most trading platforms offer only basic candlestick charts without integrated predictive analytics.
+		\item Information Asymmetry:\\
+		Institutional investors and brokerage insiders often have early access to material information (earnings reports, policy changes), putting retail investors at a disadvantage. A data-driven ML system that relies purely on historical price patterns can help level this playing field.
+		\item Noise in Daily Price Data:\\
+		NEPSE stocks, particularly mid-cap banking stocks, exhibit high day-to-day noise due to low liquidity and wide bid-ask spreads. Naive prediction of next-day up/down movement is inherently noisy, as approximately 40--60\% of daily price changes are near-zero micro-movements that lack meaningful directional signal.
+		\item Overfitting in Financial ML:\\
+		Many academic projects in stock prediction suffer from data leakage (using future information in feature computation), look-ahead bias (fitting thresholds on test data), and lack of proper time-series cross-validation. These methodological errors produce models that appear to perform well in backtesting but fail entirely in real-world deployment.
+		\item No Integrated Backtesting:\\
+		Most prediction projects stop at classification metrics (accuracy, F1-score) without testing whether the predictions translate into profitable trading strategies. Without realistic backtesting that accounts for transaction costs, slippage, and stop-loss mechanisms, the practical value of predictions remains unclear.
+	\end{enumerate}
+	
+	This project addresses all five problems by building a leakage-free, properly validated, and realistically backtested ML system for NEPSE stock direction prediction.
+	
+	\section{Objective}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item To develop an ensemble machine learning-based system that predicts the direction of NEPSE stock prices by engineering 50+ technical indicators from raw OHLCV data, applying Triple-Barrier target labeling, and training a soft-voting ensemble of Random Forest, Gradient Boosting, XGBoost, and Logistic Regression with proper time-series validation.
+		\item To evaluate the predictive system comprehensively using time-series cross-validation, walk-forward validation, classification metrics (Accuracy, F1-Score, ROC-AUC, Matthews Correlation Coefficient), and realistic backtesting with brokerage fees and ATR-based stop-loss to validate practical trading utility.
+	\end{enumerate}
+	
+	\section{Features}
+	The features of the project include:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Automated Feature Engineering\\
+		Computes 50+ technical indicators (RSI, MACD, Bollinger Bands, ADX, Stochastic Oscillator, ATR, volume-based features, etc.) from raw OHLCV data without any manual pre-computation. All computations are strictly backward-looking to prevent data leakage.
+		\item Triple-Barrier Target Labeling\\
+		Replaces the naive next-day up/down target with a minimum-move threshold over a configurable horizon (default: 10 trading days, 1.5\% threshold). Ambiguous near-flat rows are dropped, producing a cleaner and more learnable classification target.
+		\item Ensemble Machine Learning Model\\
+		A soft-voting classifier combining Random Forest (150 trees), Gradient Boosting (120 trees), XGBoost (120 trees), and Logistic Regression with tuned weights [2, 2, 2, 1] for robust direction prediction. A two-stage training strategy refits the model on 87.5\% of data for final evaluation.
+		\item Comprehensive Evaluation and Backtesting\\
+		Includes 5-fold TimeSeriesSplit cross-validation, 8-fold walk-forward validation, confusion matrices, ROC-AUC curves, learning curves, and a realistic backtest engine with brokerage fees (0.3\%), ATR-based stop-loss, and equity curve comparison against buy-and-hold benchmark.
+		\item Actionable Daily Prediction\\
+		Produces a BUY / SELL / WAIT signal with probability-based confidence score for the latest trading day, along with model persistence for reuse without retraining.
+		\item Interactive Web Dashboard\\
+		A Flask-based web application with Tailwind CSS providing CSV upload, configurable prediction parameters (horizon, thresholds, fees) via sidebar, and a results display with signal cards and prediction tables.
+	\end{enumerate}
+	
+	\section{Application}
+	The application of this project can be listed as:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Retail Investor Decision Support\\
+		Individual investors in the NEPSE market can use the system's BUY/SELL/WAIT signals as one input in their investment decision process, complementing fundamental analysis.
+		\item Academic Research\\
+		The project serves as a template for rigorous financial ML research, demonstrating proper methodology (leakage prevention, time-series validation, realistic backtesting) that can be extended to other NEPSE stocks or markets.
+		\item Financial Education\\
+		The comprehensive visualizations (feature importance, learning curves, confusion matrices) help students and new investors understand how machine learning models analyze market data and what factors drive predictions.
+		\item Algorithmic Trading Prototype\\
+		While not suitable for fully automated trading without additional infrastructure, the system provides a foundation that could be extended with real-time data feeds and broker API integration for semi-automated trading.
+	\end{enumerate}
+	
+	\section{Feasibility Analysis}
+	A feasibility analysis is crucial for determining if a project is viable and worth pursuing or not.
+	
+	\subsection{Economic Feasibility}
+	This project is highly economically feasible. All tools used are open-source: Python, scikit-learn, XGBoost, Matplotlib, Pandas, and NumPy require no commercial software licenses. Historical OHLCV data for NEPSE stocks is publicly available from NEPSE's official website, merolagani.com, and sharesansar.com. The system runs on standard consumer-grade hardware with no GPU or cloud computing required. Once developed, the system can be run indefinitely without subscription fees or API costs, making it a zero-cost solution after initial development.
+	
+	\subsection{Technical Feasibility}
+	This project is technically feasible with current technology. The libraries used (scikit-learn, XGBoost, and the Python data science stack) are mature, well-documented, and widely adopted in production financial systems globally. The techniques employed (ensemble methods, technical indicators, time-series validation) are established in the academic literature with hundreds of published papers demonstrating their applicability. The full training pipeline completes in under 5 minutes on a standard laptop, requiring no specialized infrastructure.
+	
+	\subsection{Operational Feasibility}
+	The Stock Market Analysis system is designed for ease of operation. The entire pipeline runs with a single \texttt{python train\_test11.py} command requiring no complex configuration, database setup, or multi-step deployment. All results are presented as intuitive visualizations and plain-text reports. Once trained, the model can be saved and reloaded instantly for daily predictions without retraining. The system runs cross-platform on Windows, macOS, and Linux without modification.
+	
+	\subsection{Schedule Feasibility}
+	The schedule feasibility of this project has been assessed based on the planned tasks, available resources, and potential risks. The project follows a structured five-phase development approach:
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Phase 1: Literature review, methodology design, and dataset collection
+		\item Phase 2: Feature engineering pipeline, target labeling, and model training
+		\item Phase 3: Cross-validation, walk-forward validation, and backtesting implementation
+		\item Phase 4: Visualization generation, metrics reports, and documentation
+		\item Phase 5: Testing, leakage audits, parameter tuning, and final refinement
+	\end{enumerate}
+	
+	The project timeline is illustrated in the Gantt chart (Figure \ref{fig:gantt-chart}), spanning from May 2025 to March 2026. Research runs throughout the project, with specification, design, development, testing, deployment, and documentation phases overlapping where appropriate.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/gantt_chart.png}
+		\caption{Project Gantt Chart (Development Timeline)}
+		\label{fig:gantt-chart}
+	\end{figure}
+	
+	\section{System Requirement}
+	
+	\subsection{Hardware Requirement}
+	\begin{table}[ht]
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Processor} & Intel Core i3 (minimum) / Intel Core i5 or higher (recommended) \\ 
+			\hline
+			\textbf{RAM} & 4 GB (minimum) / 8 GB or higher (recommended) \\ 
+			\hline
+			\textbf{Storage} & 500 MB free disk space (minimum) / 1 GB (recommended) \\ 
+			\hline
+			\textbf{Display} & 1024 $\times$ 768 resolution (minimum) \\ 
+			\hline
+			\textbf{GPU} & Not required (CPU-only execution) \\ 
+			\hline
+		\end{tabularx}
+		\caption{Hardware Requirements}
+		\label{tab:hardware-requirements}
+	\end{table}
+	
+	\subsection{Software Requirement}
+	\begin{table}[ht]
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Operating System} & Windows 10/11, macOS 10.15+, or Linux \\ 
+			\hline
+			\textbf{Programming Language} & Python 3.8 or higher \\ 
+			\hline
+			\textbf{Core Libraries} & NumPy, Pandas, Matplotlib, Seaborn \\ 
+			\hline
+			\textbf{ML Libraries} & scikit-learn 1.0+, XGBoost 1.5+ \\ 
+			\hline
+			\textbf{Web Framework} & Flask 3.0+, Tailwind CSS (CDN) \\ 
+			\hline
+			\textbf{Package Manager} & pip (latest) or Conda \\ 
+			\hline
+		\end{tabularx}
+		\caption{Software Requirements}
+		\label{tab:software-requirements}
+	\end{table}
+	
+	
+	% ═══════════════════════════════════════════════════════════════
+	%  CHAPTER 2: LITERATURE REVIEW
+	% ═══════════════════════════════════════════════════════════════
+	\chapter{Literature Review}
+	Stock market prediction has been a central research topic in computational finance for over three decades. This section reviews the key literature that informs the methodology of the present project.
+	
+	Fama (1970) \cite{fama1970} introduced the Efficient Market Hypothesis (EMH), which posits that stock prices fully reflect all available information, making it impossible to consistently achieve returns above the market average through prediction. However, subsequent empirical research has identified numerous market anomalies (momentum effects, value premium, small-cap premium) that challenge the strong EMH, particularly in emerging markets with lower institutional participation and less efficient price discovery \cite{malkiel2003}. The NEPSE market, being a developing exchange with limited institutional trading, is widely considered less efficient than developed markets, providing a stronger theoretical basis for ML-based prediction.
+	
+	Patel, Shah, Thakkar, and Kotecha (2015) \cite{patel2015} conducted a comprehensive study comparing four ML algorithms (Artificial Neural Networks (ANN), Support Vector Machine (SVM), Random Forest (RF), and Naive Bayes) for predicting the movement of the CNX Nifty and S\&P BSE Sensex Indian stock indices. They introduced a Trend Deterministic Data Preparation (TDDP) technique that converts continuous technical indicator values into trend-based discrete values. Their results showed that Random Forest achieved the highest accuracy (89.98\%) with TDDP, significantly outperforming models using raw continuous features. This paper influenced the choice of Random Forest as a key ensemble component and the idea of engineering domain-informed features from raw OHLCV data.
+	
+	Khaidem, Saha, and Dey (2016) \cite{khaidem2016} specifically studied Random Forest for stock price direction prediction across multiple markets (AAPL, MSFT, Samsung). They demonstrated that Random Forest's ability to handle high-dimensional feature spaces and provide feature importance rankings makes it particularly suitable for financial data with many correlated technical indicators. Their reported accuracy of 70--85\% across different stocks reinforced confidence in RF as a base learner. However, they used simple next-day direction as the target, which this project improves upon with Triple-Barrier labeling.
+	
+	Basak, Kar, Saha, Khaidem, and Dey (2019) \cite{basak2019} extended the work on ensemble methods by comparing Gradient Boosted Decision Trees (GBDT) against Random Forest for stock prediction. They found that GBDT outperformed RF in capturing sequential patterns in financial time series, attributed to GBDT's boosting mechanism that iteratively corrects previous errors. This finding motivated the inclusion of both Gradient Boosting and XGBoost in the ensemble, alongside Random Forest, to leverage the complementary strengths of bagging and boosting.
+	
+	Chen and Guestrin (2016) \cite{chen2016} introduced XGBoost (Extreme Gradient Boosting), which has become one of the most successful ML algorithms in practice. XGBoost improves upon traditional gradient boosting with regularization terms ($L_1$ and $L_2$), efficient handling of sparse data, and parallel tree construction. XGBoost is incorporated as the third tree-based model in the ensemble, taking advantage of its regularization to combat overfitting on the relatively small NEPSE dataset.
+	
+	Bustos and Pomares-Quimbaya (2020) \cite{bustos2020} published a systematic review of 81 research papers on stock market movement prediction. Their analysis revealed several important findings: (1) Ensemble methods consistently outperform single classifiers; (2) Technical indicators are the most commonly used features, with RSI, MACD, and moving averages being the most predictive; (3) Most studies suffer from methodological issues including lack of proper train/test separation, use of future data in feature computation, and absence of realistic backtesting. This review directly influenced the emphasis on leakage prevention, proper time-series validation, and comprehensive backtesting in this project.
+	
+	de Prado (2018) \cite{deprado2018}, in his book \textit{Advances in Financial Machine Learning}, introduced the Triple-Barrier Method for labeling financial data. Traditional binary labeling (next-day up/down) is problematic because: (a) many daily returns are near-zero and essentially random; (b) the signal-to-noise ratio is very low for daily timeframes; (c) the resulting labels are heavily imbalanced toward the majority class. The Triple-Barrier method addresses these issues by defining three barriers (profit-taking (upper), stop-loss (lower), and time expiration (vertical)) and labeling a sample based on which barrier is touched first. This project adapts this concept using a horizon-based minimum-move threshold.
+	
+	Breiman (2001) \cite{breiman2001} introduced Random Forests, demonstrating that bagging combined with random feature subspace selection produces ensemble models with low generalization error. For financial data, Random Forests' robustness to outliers and ability to model non-linear interactions without explicit feature engineering makes them a strong base learner.
+	
+	Friedman (2001) \cite{friedman2001} developed the Gradient Boosting Machine (GBM) framework, which builds an additive model in a forward stage-wise fashion by optimizing a differentiable loss function. GBM's sequential error-correction mechanism makes it particularly effective for financial time series where recent patterns may differ from historical patterns.
+	
+	Hoseinzade and Haratizadeh (2019) \cite{hoseinzade2019} explored the use of deep learning (CNNs) for stock market prediction and compared performance against traditional ML ensembles. While deep learning showed promise for high-frequency data with millions of samples, they found that ensemble methods performed comparably or better on smaller datasets ($< 5000$ samples), which is typical for individual NEPSE stocks with only a few years of daily data. This validated the choice of classical ensemble methods over deep learning for this project.
+	
+	In the context of NEPSE specifically, there is limited published academic research on ML-based stock prediction. Shrestha (2019) \cite{shrestha2019} applied basic neural networks to NEPSE index prediction with limited success, and Poudel and Thapa (2020) \cite{poudel2020} used LSTM for individual NEPSE stock prediction but did not address data leakage or proper validation. This project contributes to this nascent field by implementing best practices from the international financial ML literature, including leakage prevention, Triple-Barrier labeling, and realistic backtesting, adapted for the unique characteristics of the NEPSE market.
+	
+	In summary, the literature establishes that ensemble methods combining diverse classifiers (RF, GBM, XGBoost, LR) outperform individual models for stock prediction. Technical indicators computed from OHLCV data are the most effective features. Triple-Barrier target labeling produces cleaner signals than naive next-day direction. Proper time-series validation and realistic backtesting are essential but frequently omitted in existing work. This project addresses these gaps for the NEPSE market.
+	
+	
+	% ═══════════════════════════════════════════════════════════════
+	%  CHAPTER 3: METHODOLOGY
+	% ═══════════════════════════════════════════════════════════════
+	\chapter{Methodology}
+	
+	\section{System Overview}
+	The proposed system is an automated stock market analysis framework designed to predict the price direction of NEPSE-listed stocks using an ensemble of machine learning classifiers. The system processes raw historical OHLCV data through a structured pipeline of feature engineering, target labeling, model training, evaluation, backtesting, and daily prediction.
+	
+	The system consists of seven integrated modules:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Target Labeling (make\_target):\\
+		Applies the Triple-Barrier minimum-move methodology to create UP/DOWN labels from raw Close prices, dropping ambiguous near-flat rows.
+		\item Feature Engineering (engineer\_features):\\
+		Computes 50+ technical indicators from raw OHLCV data using only backward-looking (non-leaking) operations including rolling windows, lagged values, and exponential moving averages. A curated subset of 27 features is selected for model training.
+		\item Model Training (NBLMaxProfitV5.train):\\
+		Splits data chronologically (75/12.5/12.5), scales features using RobustScaler (fit on train only), trains a soft-voting ensemble of RF + GBM + XGBoost + LR with two-stage training (train-only then refit on train+val), and performs 5-fold TimeSeriesSplit cross-validation.
+		\item Evaluation and Visualization:\\
+		Generates 10+ publication-quality charts (confusion matrices, ROC-AUC, learning curves, feature importance, correlation heatmap) and a comprehensive metrics report.
+		\item Backtesting (run\_backtest):\\
+		Simulates realistic trading on the out-of-sample test set with brokerage fees, ATR-based stop-loss, and minimum hold period.
+		\item Daily Prediction (predict\_today):\\
+		Produces actionable BUY/SELL/WAIT signal with confidence score for the latest trading day.
+		\item Web Interface (Flask Application):\\
+		Provides an interactive web-based dashboard built with Flask and Tailwind CSS where users can upload CSV files, configure prediction parameters (target horizon, thresholds, fees) through a sidebar, and view prediction results with signal distribution and confidence scores.
+	\end{enumerate}
+	
+	The complete system architecture is illustrated in Figure \ref{fig:system-architecture}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/system_architecture.png}
+		\caption{System Architecture of Stock Prediction System}
+		\label{fig:system-architecture}
+	\end{figure}
+	
+	Figure \ref{fig:use-case} presents the use case diagram of the system, illustrating the interaction flow between the six major subsystems: Data Ingestion (CSV upload via CLI or Flask UI), Feature Engineering (indicator computation and scaling), Data Splitting (chronological train/val/test partitioning), Model Training (ensemble construction with two-stage strategy), Backtesting (walk-forward and realistic simulation), and Output (visualization suite and BUY/SELL/WAIT signal dashboard).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/use-case_diagram.png}
+		\caption{Use Case Diagram (System Interaction Flow)}
+		\label{fig:use-case}
+	\end{figure}
+	
+	\section{Data Acquisition}
+	The primary dataset is historical daily OHLCV data for SANIMA Bank (ticker: SANIMA) listed on the Nepal Stock Exchange (NEPSE). The data is sourced from publicly available NEPSE data providers and stored as a CSV file (\texttt{SANIMA\_cleanedlatest.csv}).
+	
+	The input CSV contains the following columns:
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|l|X|}
+			\hline
+			\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+			\hline
+			Date & datetime & Trading date (YYYY-MM-DD format) \\
+			\hline
+			Open & float & Opening price for the trading session \\
+			\hline
+			High & float & Highest price during the session \\
+			\hline
+			Low & float & Lowest price during the session \\
+			\hline
+			Close & float & Closing (last traded) price \\
+			\hline
+			Volume & integer & Total shares traded during the session \\
+			\hline
+		\end{tabularx}
+		\caption{Dataset Column Specification}
+		\label{tab:dataset-columns}
+	\end{table}
+	
+	The data is sorted chronologically upon loading to ensure all subsequent operations (rolling windows, lagged features, forward returns) produce correct temporal results. No pre-computed indicators are included in the CSV; all technical indicators are derived within the pipeline.
+	
+	\section{Data Analysis}
+	Before model training, the system performs several exploratory data analysis (EDA) steps to understand the data distribution and characteristics:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Class Balance Check:\\
+		After Triple-Barrier labeling, the system prints the distribution of UP (1) and DOWN (0) labels, along with the number and percentage of dropped ambiguous rows. This is critical for understanding whether the dataset is balanced enough for training.
+		\item Feature Distribution Box-Plots:\\
+		Box-plots are generated for all engineered features, allowing visual inspection of feature ranges and scales, presence of outliers (common in financial data), and skewness of distributions.
+		\item Correlation Heat-Map:\\
+		A Pearson correlation matrix is computed and visualized as a triangular heatmap to reveal highly correlated feature pairs, features with low correlation that may provide unique predictive information, and potential redundancy in the feature set.
+		\item Target Distribution Visualization:\\
+		A combined bar chart and pie chart showing the number of UP, DOWN, and dropped (ambiguous) rows, and class balance as percentages after Triple-Barrier filtering.
+	\end{enumerate}
+	
+	\section{Data Preprocessing}
+	
+	\subsection{Data Cleaning and Missing Value Handling}
+	Financial data from NEPSE may contain missing values due to trading holidays, corporate actions, or data collection errors. The preprocessing pipeline handles this through:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Chronological Sorting:\\
+		Data is sorted by date and re-indexed to ensure temporal consistency across all operations.
+		\item Forward-Fill and Back-Fill:\\
+		After feature engineering, missing values in feature columns are handled using \texttt{ffill().bfill().fillna(0)}. Forward-fill propagates the last known value forward (appropriate for time-series), back-fill handles the first few rows where rolling windows produce NaN, and zero-fill is the final fallback.
+		\item NaN from Rolling Windows:\\
+		The first $N$ rows (where $N$ is the largest rolling window, typically 50) will have NaN values for some features. These are handled by the forward/back-fill strategy described above.
+		\item Target NaN Handling:\\
+		Rows where the Triple-Barrier target is NaN (ambiguous rows with $|return| \leq threshold$) are explicitly dropped, not filled. This is intentional (these rows represent uninformative samples that would degrade model quality).
+	\end{enumerate}
+	
+	\subsection{Data Scaling}
+	Financial features have vastly different scales (volume may be in millions while percentage returns are in hundredths). Without scaling, algorithms like Logistic Regression (which is sensitive to feature magnitudes) would perform poorly.
+	
+	The system uses RobustScaler from scikit-learn, which scales features using the median and interquartile range (IQR) rather than mean and standard deviation. This choice is motivated by:
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Robustness to Outliers: Financial data frequently contains extreme values (price spikes, volume surges). RobustScaler is less affected by outliers compared to StandardScaler.
+		\item No Distribution Assumptions: Unlike MinMaxScaler, RobustScaler does not assume bounded distributions.
+	\end{enumerate}
+	
+	Critically, the scaler is fit on training data only and applied to validation and test data via \texttt{transform()} to prevent data leakage:
+	\begin{align}
+		X_{train} &= \text{scaler.fit\_transform}(train\_df[features]) \notag \\
+		X_{val} &= \text{scaler.transform}(val\_df[features]) \notag \\
+		X_{test} &= \text{scaler.transform}(test\_df[features]) \notag
+	\end{align}
+	
+	\section{Feature Engineering}
+	Feature engineering is the most critical component of the system. The \texttt{engineer\_features()} function computes 50+ technical indicators from raw OHLCV data. All computations use only backward-looking operations (rolling windows, lagged values) to prevent future information leakage. The engineered features are organized into the following categories:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Price Returns (7 features):\\
+		1-day return, log return, 2-day and 5-day percentage changes, and lagged returns (1, 2, 3 days shifted backward).
+		\item Candlestick Shape Features (7 features):\\
+		Body size, shadow ratio, upper/lower shadows, close-open ratio, high-low percentage, and opening gap from previous close.
+		\item Moving Averages (16 features):\\
+		Simple Moving Averages (SMA\_5, SMA\_10, SMA\_20, SMA\_50), Exponential Moving Averages (EMA\_5, EMA\_10, EMA\_20, EMA\_50), Volume Moving Averages, and crossover signals (sma\_gap, ema\_cross).
+		\item Volatility Indicators (5 features):\\
+		Short-term volatility (5-day), long-term volatility (20-day), volatility ratio, Average True Range (ATR\_14), and risk-adjusted return.
+		\item Momentum Indicators (2 features):\\
+		5-day and 10-day momentum (price change over period).
+		\item RSI: Relative Strength Index (3 features):\\
+		14-period RSI on a 0--100 scale, plus binary overbought ($>70$) and oversold ($<30$) flags.
+		\item MACD: Moving Average Convergence Divergence (3 features):\\
+		MACD line ($EMA_{12} - EMA_{26}$), signal line (9-period EMA of MACD), and MACD histogram.
+		\item Bollinger Bands (4 features):\\
+		Upper and lower bands ($20$-day SMA $\pm$ $2\sigma$), normalized band width, and price position within bands.
+		\item Stochastic Oscillator (2 features):\\
+		\%K (14-period) and \%D (3-period SMA of \%K).
+		\item ADX: Average Directional Index (1 feature):\\
+		14-period ADX measuring trend strength regardless of direction.
+		\item Volume Features (6 features):\\
+		Volume ratio, volume change, 5-day average volume, price-volume interaction, volume force indicator, and institutional volume proxy.
+		\item NEPSE Bank-Specific Features (5 features):\\
+		Range percentage, trend strength (SMA\_20/SMA\_50 ratio), volume stability, breakout detection (above 20-day SMA), and price squat indicator.
+	\end{enumerate}
+	
+	While 50+ features are engineered, the final model uses a curated subset of 27 features selected for their stationarity, regime-invariance, and relevance to NEPSE banking stocks:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Feature} & \textbf{Category / Description} \\
+			\hline
+			return & Daily price return (stationary) \\
+			\hline
+			return\_lag\_1, \_2, \_3 & Lagged returns (1, 2, 3 days prior) \\
+			\hline
+			vol\_change, vol\_change\_lag\_1 & Volume change and its 1-day lag \\
+			\hline
+			rsi\_14, rsi\_14\_lag\_1, \_2 & RSI (14-period) and 1, 2-day lags \\
+			\hline
+			ADX\_14, ADX\_14\_lag\_1 & Average Directional Index and 1-day lag \\
+			\hline
+			ema\_cross, ema\_cross\_lag\_1 & EMA crossover signal (binary) and lag \\
+			\hline
+			bb\_width, bb\_width\_lag\_1 & Bollinger Band width (normalized) and lag \\
+			\hline
+			high\_low\_pct & Daily range as \% of close price \\
+			\hline
+			close\_open\_ratio & Close-to-open ratio (candle shape) \\
+			\hline
+			atr\_14\_pct & ATR divided by close price (regime-invariant) \\
+			\hline
+			momentum\_5\_pct & 5-day momentum / close (regime-invariant) \\
+			\hline
+			macd\_hist\_pct & MACD histogram / close (regime-invariant) \\
+			\hline
+			volatility\_ratio & Short-term / long-term volatility ratio \\
+			\hline
+			BB\_pct & Price position within Bollinger Bands \\
+			\hline
+			Stoch\_K & Stochastic Oscillator \%K (14-period) \\
+			\hline
+			rsi\_momentum\_3d & 3-day change in RSI (indicator momentum) \\
+			\hline
+			adx\_momentum\_3d & 3-day change in ADX (indicator momentum) \\
+			\hline
+			bbw\_momentum\_3d & 3-day change in BB width (indicator momentum) \\
+			\hline
+			macd\_accel\_pct & 3-day MACD acceleration / close \\
+			\hline
+		\end{tabularx}
+		\caption{Curated Feature Set (27 Features)}
+		\label{tab:curated-features}
+	\end{table}
+	
+	Key design decisions in feature selection include: (1) price-normalized features (atr\_14\_pct, momentum\_5\_pct, macd\_hist\_pct) divide absolute-scale indicators by close price to ensure regime-invariance across the price range of NPR 50 (2012) to NPR 335 (2026); (2) indicator momentum features (rsi\_momentum\_3d, adx\_momentum\_3d) capture the rate of change in oscillators, which is inherently stationary; and (3) lag features provide temporal context without introducing future information leakage.
+	
+	\section{Model Development}
+	
+	\subsection{Target Labeling (Triple-Barrier Method)}
+	Instead of predicting naive next-day up/down (which is noisy), the system uses a Triple-Barrier / minimum-move target labeling inspired by de Prado \cite{deprado2018}. For each row $i$:
+	\begin{align}
+		\text{future\_return} &= \frac{\text{Close}[i + h]}{\text{Close}[i]} - 1
+	\end{align}
+	where $h$ is the horizon (default: 10 trading days). The label is assigned as:
+	\begin{align}
+		\text{direction}[i] = \begin{cases}
+			1 & \text{if future\_return} > +\tau \quad (\text{strong UP}) \\
+			0 & \text{if future\_return} < -\tau \quad (\text{strong DOWN}) \\
+			\text{NaN} & \text{if } |\text{future\_return}| \leq \tau \quad (\text{ambiguous (dropped)})
+		\end{cases}
+	\end{align}
+	where $\tau$ is the threshold (default: 0.015 = 1.5\%). This approach filters out approximately 30\% of days that are near-flat noise, giving the model a cleaner, more learnable signal. In this dataset, 3,151 raw rows are reduced to 2,208 labeled rows after Triple-Barrier filtering.
+	
+	\subsection{Data Splitting Strategy}
+	The dataset is split chronologically into three partitions with no shuffling to prevent future data from leaking into training:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|c|X|}
+			\hline
+			\textbf{Split} & \textbf{Percentage} & \textbf{Purpose} \\
+			\hline
+			Training & 75\% & Model fitting and cross-validation \\
+			\hline
+			Validation & 12.5\% & Threshold optimization, performance monitoring \\
+			\hline
+			Test & 12.5\% & Final out-of-sample evaluation and backtesting \\
+			\hline
+		\end{tabularx}
+		\caption{Chronological Data Split}
+		\label{tab:data-split}
+	\end{table}
+	
+	\subsection{Ensemble Architecture}
+	The system employs a Soft Voting Classifier that combines the predicted class probabilities from four diverse base models and selects the class with the highest average probability:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Random Forest (RF):\\
+		A bagging ensemble of 150 decision trees with max depth 3, minimum 25 samples per leaf, and sqrt feature subsampling. Class weight is balanced for automatic handling of class imbalance. Ensemble weight: 2.
+		\item Gradient Boosting Machine (GBM):\\
+		A sequential boosting ensemble of 120 shallow trees with learning rate 0.03, 75\% subsample ratio, and max depth 2. Captures sequential error patterns through iterative correction. Ensemble weight: 2.
+		\item XGBoost (XGB):\\
+		A regularized gradient boosting model with 120 trees, max depth 2, learning rate 0.03, 75\% subsample, and 70\% column subsample. $L_1$ ($\alpha=0.5$) and $L_2$ ($\lambda=3.0$) regularization prevent overfitting. Ensemble weight: 2.
+		\item Logistic Regression (LR):\\
+		A linear classifier with $C = 0.3$ (moderate regularization) and balanced class weight. Provides stability, interpretability, and acts as a linear baseline. Ensemble weight: 1.
+	\end{enumerate}
+	
+	The final ensemble prediction probability is:
+	\begin{align}
+		P(\text{UP}) = \frac{2 \cdot P_{RF} + 2 \cdot P_{GBM} + 2 \cdot P_{XGB} + 1 \cdot P_{LR}}{2 + 2 + 2 + 1}
+	\end{align}
+	
+	The rationale for giving tree-based models higher weight is that non-linear patterns dominate financial data, while Logistic Regression provides stability and a linear sanity check.
+	
+	\subsection{Cross-Validation Strategy}
+	Two complementary validation strategies are employed:
+	
+	\textbf{1. 5-Fold TimeSeriesSplit Cross-Validation (on training data):}
+	
+	TimeSeriesSplit produces folds that respect temporal ordering:
+	\vspace{-18pt}
+	\begin{itemize}
+		\item Fold 1: Train $[0..n_1]$ $\rightarrow$ Val $[n_1..n_2]$
+		\item Fold 2: Train $[0..n_2]$ $\rightarrow$ Val $[n_2..n_3]$
+		\item Fold 3: Train $[0..n_3]$ $\rightarrow$ Val $[n_3..n_4]$
+		\item Fold 4: Train $[0..n_4]$ $\rightarrow$ Val $[n_4..n_5]$
+		\item Fold 5: Train $[0..n_5]$ $\rightarrow$ Val $[n_5..\text{end}]$
+	\end{itemize}
+	Each fold is scored using F1-score. The mean and standard deviation across folds indicate model stability.
+	
+	\textbf{2. Walk-Forward Validation (on train+validation set):}
+	
+	An expanding-window approach that simulates sequential deployment. For each fold, a new RobustScaler is fit on the training portion, a fresh ensemble is trained, and evaluated on the test portion. Walk-forward validation is restricted to the train+validation period (never touching the test set) to maintain out-of-sample integrity.
+	
+	\subsection{Backtesting Framework}
+	The backtesting engine simulates realistic trading on the out-of-sample test set:
+	
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Entry Rules:\\
+		Enter a position when model probability $>$ BUY\_THRESHOLD (0.50). Full capital is invested minus brokerage fee.
+		\item Exit Rules:\\
+		Signal-based exit when probability $<$ SELL\_THRESHOLD (0.45) and minimum hold period (3 days) is met. Stop-loss exit when price drops below entry price minus $2 \times ATR$ at entry time.
+		\item Transaction Costs:\\
+		0.3\% brokerage fee applied on both entry and exit trades.
+		\item Performance Metrics:\\
+		Total Return (\%), Win Rate (\%), Sharpe Ratio (risk-adjusted, annualized), Maximum Drawdown (largest peak-to-trough decline), and Equity Curve vs. Buy-and-Hold benchmark.
+	\end{enumerate}
+	
+	
+	% ═══════════════════════════════════════════════════════════════
+	%  CHAPTER 4: RESULT AND DISCUSSION
+	% ═══════════════════════════════════════════════════════════════
+	\chapter{Result and Discussion}
+	
+	\section{Dataset Summary}
+	The SANIMA Bank dataset contains 3,151 daily OHLCV records spanning from April 2012 to February 2026. After applying Triple-Barrier target labeling (horizon = 10 days, threshold = 1.5\%), 2,208 rows (70.1\%) were retained with clear directional signals, while 943 rows (29.9\%) were dropped as ambiguous near-flat movements. The resulting class distribution is approximately balanced, with UP and DOWN labels each representing roughly 50\% of the retained data.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/target_distribution.png}
+		\caption{Target Distribution After Triple-Barrier Filtering}
+		\label{fig:target-distribution}
+	\end{figure}
+	
+	The chronological data split allocates 1,656 rows (75\%) for training, 276 rows (12.5\%) for validation, and 276 rows (12.5\%) for out-of-sample testing.
+	
+	\section{Exploratory Data Analysis}
+	
+	\subsection{Feature Distribution}
+	Box-plots of all 27 curated features on the training set (Figure \ref{fig:feature-boxplots}) reveal that most features are well-scaled after RobustScaler transformation. The bounded oscillators (RSI, ADX, Stochastic) naturally fall within defined ranges, while price-normalized features (atr\_14\_pct, momentum\_5\_pct) show tight distributions with occasional outliers corresponding to high-volatility market events.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/feature_boxplots.png}
+		\caption{Feature Distribution Box-Plots (Training Set)}
+		\label{fig:feature-boxplots}
+	\end{figure}
+	
+	\subsection{Feature Correlation}
+	The correlation heatmap (Figure \ref{fig:correlation-heatmap}) shows that while some feature pairs exhibit moderate correlation (e.g., RSI and Stochastic Oscillator, which measure similar momentum concepts), no pair exceeds the 0.90 threshold that would necessitate removal. The lag features introduce controlled temporal correlation without redundancy. Price-normalized features (atr\_14\_pct, momentum\_5\_pct, macd\_hist\_pct) show lower inter-correlation than their absolute-scale counterparts, validating the normalization approach.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/correlation_heatmap.png}
+		\caption{Feature Correlation Heatmap (Pearson)}
+		\label{fig:correlation-heatmap}
+	\end{figure}
+	
+	\section{Model Performance Results}
+	
+	\subsection{Cross-Validation Results}
+	The 5-fold TimeSeriesSplit cross-validation on the training set produced the following F1 scores:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Metric} & \textbf{Value} \\
+			\hline
+			CV F1 Scores & [0.6282, 0.6201, 0.4170, 0.5438, 0.4267] \\
+			\hline
+			Mean CV F1 & 0.5271 \\
+			\hline
+			Std CV F1 & 0.0910 \\
+			\hline
+		\end{tabularx}
+		\caption{5-Fold TimeSeriesSplit Cross-Validation Results}
+		\label{tab:cv-results}
+	\end{table}
+	
+	The variation across folds reflects the non-stationary nature of financial data (earlier folds with less training data show higher variance, while later folds with more historical context achieve more stable F1 scores).
+	
+	\subsection{Training Set Performance}
+	The model achieves 67.21\% accuracy on the training set, indicating that the ensemble captures meaningful patterns without severe underfitting. The per-class metrics show balanced performance between UP and DOWN predictions:
+	% Add this to your preamble to make centered X columns
+	\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|Y|Y|Y|c|}
+			\hline
+			\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+			\hline
+			DOWN (0) & 0.66 & 0.71 & 0.68 & 820 \\
+			\hline
+			UP (1) & 0.69 & 0.64 & 0.66 & 836 \\
+			\hline
+			\textbf{Accuracy} & \multicolumn{3}{c|}{\textbf{0.6721 (67.21\%)}} & 1,656 \\
+			\hline
+			Macro Avg & 0.67 & 0.67 & 0.67 & 1,656 \\
+			\hline
+		\end{tabularx}
+		\caption{Classification Report (Training Set)}
+		\label{tab:train-metrics}
+	\end{table}
+	\subsection{Test Set Performance (Out-of-Sample)}
+	The final model, refitted on 87.5\% of data (Train + Validation) in Stage 2, achieves \textbf{57.97\% accuracy} on the held-out test set. This represents a moderate but meaningful improvement over random (50\%) prediction, demonstrating that the ensemble captures genuine directional signal in NEPSE stock data:
+		
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X} % Define a centered X column
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{|l|Y|Y|Y|c|}
+		\hline
+		\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+		\hline
+		DOWN (0) & 0.56 & 0.61 & 0.59 & 134 \\
+		\hline
+		UP (1) & 0.60 & 0.55 & 0.57 & 142 \\
+		\hline
+		\textbf{Accuracy} & \multicolumn{3}{c|}{\textbf{0.5797 (57.97\%)}} & 276 \\
+		\hline
+		Macro Avg & 0.58 & 0.58 & 0.58 & 276 \\
+		\hline
+	\end{tabularx}
+	\caption{Classification Report — Test Set (Out-of-Sample)}
+	\label{tab:test-metrics}
+\end{table}
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|c|X|}
+			\hline
+			\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+			\hline
+			Accuracy & 57.97\% & Above random (50\%), meaningful signal \\
+			\hline
+			F1-Score (Macro) & 0.5796 & Balanced across both classes \\
+			\hline
+			F1-Score (Weighted) & 0.5794 & Consistent with macro (balanced dataset) \\
+			\hline
+			ROC-AUC & 0.5696 & Moderate discrimination ability \\
+			\hline
+			Matthews Corr Coef & 0.1614 & Weak but positive correlation \\
+			\hline
+			Cohen's Kappa & 0.1608 & Agreement beyond random chance \\
+			\hline
+		\end{tabularx}
+		\caption{Comprehensive Test Set Evaluation Metrics}
+		\label{tab:test-comprehensive}
+	\end{table}
+	
+	\subsection{Confusion Matrices}
+	The confusion matrices for both validation and test sets are presented below. The validation set shows higher DOWN recall (0.89) but lower UP recall (0.20), indicating that the initial model tends toward conservative predictions. After refitting in Stage 2, the test set shows more balanced predictions with DOWN recall 0.61 and UP recall 0.55.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{nbl_v5_output/confusion_matrix_validation.png}
+		\caption{Confusion Matrix (Validation Set)}
+		\label{fig:confusion-matrix-val}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{nbl_v5_output/confusion_matrix_test.png}
+		\caption{Confusion Matrix (Test Set)}
+		\label{fig:confusion-matrix-test}
+	\end{figure}
+	
+	\subsection{ROC-AUC Analysis}
+	The Receiver Operating Characteristic (ROC) curves for both validation and test sets demonstrate the model's ability to discriminate between UP and DOWN classes at various threshold settings. The test set achieves an AUC of 0.5696, indicating moderate discriminative power above the 0.5 baseline.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{nbl_v5_output/roc_curve_validation.png}
+		\caption{ROC-AUC Curve (Validation Set)}
+		\label{fig:roc-curve-val}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{nbl_v5_output/roc_curve_test.png}
+		\caption{ROC-AUC Curve (Test Set (AUC = 0.5696))}
+		\label{fig:roc-curve-test}
+	\end{figure}
+	
+	\subsection{Learning Curves}
+	The learning curves (Figure \ref{fig:learning-curves}) plot training and validation F1 scores as a function of training set size. The gap between training and validation curves indicates the degree of overfitting. The moderate gap observed is expected for financial data where distribution shift between time periods is inherent.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/learning_curves.png}
+		\caption{Learning Curves (Train vs Validation F1-Score)}
+		\label{fig:learning-curves}
+	\end{figure}
+	
+	\subsection{Feature Importance}
+	Feature importance analysis (Figure \ref{fig:feature-importance}) reveals which features contribute most to the ensemble's predictions. The averaged importance from Random Forest and Gradient Boosting shows that momentum and volatility features (returns, RSI, ADX) rank highest, while price-normalized features (atr\_14\_pct, momentum\_5\_pct) provide regime-invariant signal that generalizes across different price levels.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/feature_importance.png}
+		\caption{Feature Importance (RF + GBM Average)}
+		\label{fig:feature-importance}
+	\end{figure}
+	
+	\section{Backtesting Results}
+	The realistic backtesting engine simulates trading on the out-of-sample test set with brokerage fees (0.3\%), ATR-based stop-loss ($2 \times ATR$), and a minimum hold period of 3 days. The results demonstrate that the model's predictions translate into profitable trading:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabularx}{\textwidth}{|l|c|X|}
+			\hline
+			\textbf{Metric} & \textbf{Value} & \textbf{Description} \\
+			\hline
+			Starting Capital & NPR 100,000 & Initial portfolio value \\
+			\hline
+			Final Value & NPR 132,941 & Portfolio value after backtest \\
+			\hline
+			Total Return & +32.94\% & Net return after all fees \\
+			\hline
+			Total Trades & 8 & Number of completed round-trip trades \\
+			\hline
+			Win Rate & 37.5\% & Percentage of profitable trades \\
+			\hline
+			Sharpe Ratio & 2.856 & Risk-adjusted return (annualized) \\
+			\hline
+			Max Drawdown & $-$16.66\% & Largest peak-to-trough decline \\
+			\hline
+		\end{tabularx}
+		\caption{Backtest Results (Out-of-Sample Test Set)}
+		\label{tab:backtest-results}
+	\end{table}
+	
+	The backtest achieves a notable +32.94\% return on the test period despite a relatively low win rate (37.5\%), indicating that winning trades capture substantially larger price moves than losing trades. The Sharpe ratio of 2.856 indicates strong risk-adjusted performance, though this should be interpreted with caution given the small sample size (8 trades). The maximum drawdown of $-$16.66\% represents a manageable risk level for the return achieved.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{nbl_v5_output/equity_curve.png}
+		\caption{Equity Curve (Strategy vs Buy-and-Hold Benchmark)}
+		\label{fig:equity-curve}
+	\end{figure}
+	
+	The equity curve (Figure \ref{fig:equity-curve}) compares the model's trading strategy against a passive buy-and-hold approach, demonstrating that the ML-based system preserves capital during downturns while capturing upward price movements.
+	
+	\section{Discussion}
+	
+	\subsection{Performance Analysis}
+	The test accuracy of 57.97\% exceeds the 50\% random baseline and demonstrates that ensemble machine learning can extract directional signal from NEPSE stock data. The performance gap between training (67.21\%) and test (57.97\%) accuracy reflects the inherent challenge of financial prediction: market regimes shift over time, and patterns learned from historical data (2012--2024) may not fully transfer to the test period (2024--2026).
+	
+	The two-stage training strategy proved effective (by refitting the model on 87.5\% of data (Train + Validation) in Stage 2, the model gains access to more recent market patterns, improving test accuracy compared to models trained on only 75\% of data).
+	
+	\subsection{Comparison with Literature}
+	The achieved accuracy of 57.97\% on out-of-sample data is realistic for a properly validated financial prediction system. Many studies in the literature report accuracies of 70--90\%, but these frequently suffer from data leakage, look-ahead bias, or evaluation on non-held-out data. When evaluated with strict time-series splitting and no data leakage, ensemble methods on daily stock data typically achieve 55--65\% accuracy \cite{bustos2020}, placing this system's performance within the expected range.
+	
+	\subsection{Practical Implications}
+	The +32.94\% backtest return demonstrates practical trading value. Even modest prediction accuracy (57.97\%) translates into profitable trading when combined with proper risk management (ATR-based stop-loss, position sizing). The Sharpe ratio of 2.856 indicates that the strategy generates returns well above the risk-free rate on a risk-adjusted basis.
+	
+	\subsection{Web Interface}
+	The Flask-based web application provides an accessible interface for users to interact with the trained model. Users can upload CSV files, adjust prediction parameters (target horizon, buy/sell thresholds, brokerage fee) through a sidebar, and view prediction results with BUY/SELL/WAIT signals, confidence scores, and signal distribution statistics. This makes the system accessible to retail investors without technical ML knowledge.
+	
+	\section{Future Scope}
+	While the current system is complete and functional, the following extensions could further enhance its capabilities:
+	\vspace{-18pt}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Multi-Stock Support: Extend the system to handle multiple NEPSE stocks simultaneously, enabling portfolio-level analysis and diversification studies.
+		\item Real-Time Data Integration: Connect to NEPSE data APIs (e.g., merolagani, sharesansar) for automatic daily data updates without manual CSV downloads.
+		\item Sentiment Analysis: Incorporate news sentiment and social media signals as additional features alongside technical indicators.
+		\item Deep Learning Models: Experiment with LSTM and Transformer-based architectures that may capture long-range temporal dependencies better than tree-based models.
+		\item Hyperparameter Optimization: Implement Bayesian optimization (using Optuna) for systematic hyperparameter tuning of all ensemble components.
+	\end{enumerate}
+	
+	
+	% ═══════════════════════════════════════════════════════════════
+	%  CHAPTER 5: EPILOGUE
+	% ═══════════════════════════════════════════════════════════════
+	\chapter{Epilogue}
+	This project successfully demonstrates the application of ensemble machine learning to stock market direction prediction on the Nepal Stock Exchange (NEPSE), specifically for SANIMA Bank. Through rigorous implementation of feature engineering, Triple-Barrier target labeling, a soft-voting ensemble of four diverse classifiers, and a Flask-based web interface, the system delivers a complete, end-to-end stock analysis tool (from raw CSV data to actionable trading signals accessible through a browser).
+	
+	The system achieves 57.97\% out-of-sample test accuracy with a +32.94\% backtest return, demonstrating that meaningful directional prediction is achievable for NEPSE stocks when proper ML methodology is applied.
+	
+	The key contributions of this project are:
+	
+	\textbf{Methodological Rigor:} Unlike many academic stock prediction projects, this system implements strict leakage prevention (scaler fit on training only, backward-looking features, narrow threshold optimization range), proper time-series validation (5-fold TimeSeriesSplit CV, 8-fold walk-forward validation), and realistic backtesting with fees, ATR-based stop-loss, and minimum hold period. These practices ensure that reported performance reflects genuine predictive ability rather than overfitting artifacts.
+	
+	\textbf{Triple-Barrier Target Innovation:} By adopting a minimum-move threshold (1.5\% over 10 trading days) for target labeling, the system filters out approximately 30\% of near-flat daily movements that constitute noise in NEPSE stock data. This produces a cleaner, more balanced target distribution that is more learnable by ML algorithms and more actionable for investors (the model predicts meaningful price moves, not random daily ticks).
+	
+	\textbf{Price-Regime Invariance:} The curated 27-feature set includes price-normalized indicators (ATR/close, momentum/close, MACD/close) that ensure the model generalizes across different price regimes. SANIMA's price ranged from NPR 50 (2012) to NPR 335 (2026), and normalization prevents the model from learning absolute-price patterns that fail to transfer across regimes.
+	
+	\textbf{Two-Stage Training Strategy:} The innovative two-stage approach (Stage 1 trains on 75\% for validation, Stage 2 refits on 87.5\% (train+validation) for final test (maximizes the use of recent market data while maintaining proper out-of-sample evaluation integrity)).
+	
+	\textbf{Comprehensive Evaluation Framework:} The system evaluates performance across 12+ metrics (Accuracy, Precision, Recall, F1-macro, F1-weighted, ROC-AUC, MCC, Kappa, cross-validation scores, walk-forward consistency, Sharpe ratio, maximum drawdown), providing a multi-faceted view of model quality that goes beyond simple accuracy reporting.
+	
+	\textbf{Interactive Web Interface:} The Flask-based web dashboard with Tailwind CSS allows users to upload CSV data, configure prediction parameters through an intuitive sidebar, and view BUY/SELL/WAIT signals with confidence scoresj (making the system accessible to retail investors without technical ML knowledge).
+	
+	\textbf{Lessons Learned:}
+	\vspace{-18pt}
+	\begin{itemize}
+		\item Financial ML requires domain-specific validation strategies; standard k-fold cross-validation is inappropriate for time-series data.
+		\item Feature quality and regime-invariance matter more than feature quantity; the curated 27-feature set with price-normalization outperforms using all 50+ features in absolute scale.
+		\item Ensemble diversity (combining bagging, boosting, and linear models) is more important than tuning a single model to perfection.
+		\item Backtesting with realistic transaction costs reveals that even modest prediction accuracy (57.97\%) can produce substantial returns (+32.94\%) when combined with proper risk management.
+		\item The NEPSE market's low liquidity, circuit breakers, and limited data history create unique challenges not captured by models designed for developed market assumptions.
+	\end{itemize}
+	
+	In conclusion, this project delivers a complete, production-ready stock analysis system that serves as both a practical tool for NEPSE retail investors and a rigorous academic demonstration of proper financial ML methodology. The system can be extended with real-time data feeds, sentiment analysis, deep learning architectures, and multi-stock portfolio optimization as NEPSE continues to modernize its infrastructure.
+
+        \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.85\textwidth]{photos/output1}
+        \caption{Before uploading the csv file}
+        \label{fig:output1}
+    \end{figure}
+    \vspace{1cm}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.85\textwidth]{photos/output2}
+        \caption{After uploading the csv file}
+        \label{fig:output2}
+    \end{figure}
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.85\textwidth]{photos/output3}
+        \caption{Recent Predictions}
+        \label{fig:output3}
+    \end{figure}
+	
+	
+	% ═══════════════════════════════════════════════════════════════
+	%  REFERENCES
+	% ═══════════════════════════════════════════════════════════════
+	\renewcommand{\bibname}{References}
+	\begin{thebibliography}{99}
+		
+		\bibitem{patel2015}
+		J.~Patel, S.~Shah, P.~Thakkar, and K.~Kotecha,
+		``Predicting stock and stock price index movement using Trend Deterministic Data Preparation and machine learning techniques,''
+		\textit{Expert Systems with Applications},
+		vol.~42, no.~1, pp.~259--268, 2015.
+		
+		\bibitem{khaidem2016}
+		L.~Khaidem, S.~Saha, and S.~R.~Dey,
+		``Predicting the direction of stock market prices using random forest,''
+		\textit{Applied Mathematical Finance},
+		pp.~1--20, 2016.
+		
+		\bibitem{basak2019}
+		S.~Basak, S.~Kar, S.~Saha, L.~Khaidem, and S.~R.~Dey,
+		``Predicting the direction of stock market prices using tree-based ensemble learning,''
+		\textit{North American Journal of Economics and Finance},
+		vol.~47, pp.~552--567, 2019.
+		
+		\bibitem{chen2016}
+		T.~Chen and C.~Guestrin,
+		``XGBoost: A Scalable Tree Boosting System,''
+		in \textit{Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+		pp.~785--794, 2016.
+		
+		\bibitem{bustos2020}
+		O.~Bustos and A.~Pomares-Quimbaya,
+		``Stock market movement forecast: A systematic review,''
+		\textit{Expert Systems with Applications},
+		vol.~156, 113464, 2020.
+		
+		\bibitem{deprado2018}
+		M.~L.~de~Prado,
+		\textit{Advances in Financial Machine Learning},
+		John Wiley \& Sons, 2018.
+		
+		\bibitem{fama1970}
+		E.~F.~Fama,
+		``Efficient Capital Markets: A Review of Theory and Empirical Work,''
+		\textit{The Journal of Finance},
+		vol.~25, no.~2, pp.~383--417, 1970.
+		
+		\bibitem{malkiel2003}
+		B.~G.~Malkiel,
+		``The Efficient Market Hypothesis and Its Critics,''
+		\textit{Journal of Economic Perspectives},
+		vol.~17, no.~1, pp.~59--82, 2003.
+		
+		\bibitem{breiman2001}
+		L.~Breiman,
+		``Random Forests,''
+		\textit{Machine Learning},
+		vol.~45, no.~1, pp.~5--32, 2001.
+		
+		\bibitem{friedman2001}
+		J.~H.~Friedman,
+		``Greedy Function Approximation: A Gradient Boosting Machine,''
+		\textit{The Annals of Statistics},
+		vol.~29, no.~5, pp.~1189--1232, 2001.
+		
+		\bibitem{hoseinzade2019}
+		E.~Hoseinzade and S.~Haratizadeh,
+		``CNNpred: CNN-based stock market prediction using a diverse set of variables,''
+		\textit{Expert Systems with Applications},
+		vol.~129, pp.~273--285, 2019.
+		
+		\bibitem{shrestha2019}
+		S.~Shrestha,
+		``Application of Neural Networks for NEPSE Index Prediction,''
+		\textit{Kathmandu University Journal of Science, Engineering and Technology},
+		vol.~13, no.~2, pp.~45--55, 2019.
+		
+		\bibitem{poudel2020}
+		R.~Poudel and S.~Thapa,
+		``Stock Price Prediction of Nepal Stock Exchange Using LSTM,''
+		\textit{Journal of Institute of Engineering},
+		vol.~15, no.~3, pp.~182--189, 2020.
+		
+		\bibitem{sklearn2011}
+		F.~Pedregosa, G.~Varoquaux, A.~Gramfort, \textit{et al.},
+		``Scikit-learn: Machine Learning in Python,''
+		\textit{Journal of Machine Learning Research},
+		vol.~12, pp.~2825--2830, 2011.
+		
+	\end{thebibliography}
+	
+\end{document}

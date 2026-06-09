@@ -1,0 +1,1087 @@
+
+%KECReportFormat.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DO NOT MAKE CHANGES IN THIS FILE
+
+\documentclass[12pt, a4paper]{report}
+\usepackage[left = 1.25in, right = 1in, top = 1in, bottom = 1in]{geometry}%for margin
+\usepackage{amsfonts, amsmath, amssymb} %for mathematical equations
+\usepackage{graphicx} %for images
+\usepackage{times} %font Times New Roman Font
+\usepackage{float} %required if you use H(strictly here) position for floats
+\usepackage[skip = 8pt,tableposition=top, figureposition=bottom]{caption}%adjust spacing of captions and specify where captions are
+\usepackage{hyperref} % for easy Navigation in document, also puts links in TOC, LOF, LOT...
+\usepackage{setspace} %to change line spacing in some portion \singlespacing \onehalfspacing \doublespacing
+\usepackage{acro} % for List of Abbreviation and Symbol
+\acsetup{first-style = short} % set to display only short form on the command \ac{}
+
+%packages required for complex tables
+\usepackage{bigstrut} 
+\usepackage{multirow}
+\usepackage{polyglossia}
+\usepackage{fontspec}
+\usepackage{tabularx}
+
+
+\renewcommand{\contentsname}{Table of Contents} %Change TOC Heading ... default is "Contents" 
+
+\parindent 0pt	%removes the indent in paragraph
+\setlength{\parskip}{18pt}	%for paragraph spacing
+\renewcommand{\baselinestretch}{1.5} %Line Spacing = 1.5 line-spaces
+
+%to reduce spacing in sections
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{0pt}{0pt} %left, top, bottom spacings
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+\titlespacing*{\paragraph}{0pt}{0pt}{0pt}
+\titlespacing*{\subparagraph}{0pt}{0pt}{0pt}
+
+%adjust fontsizes\ of sections
+\titleformat*{\section}{\fontsize{14pt}{18pt}\bfseries}
+\titleformat*{\subsection}{\fontsize{13pt}{18pt}\bfseries}
+\titleformat*{\subsubsection}{\fontsize{12pt}{18pt}\bfseries}
+\titleformat*{\paragraph}{\fontsize{12pt}{18pt}\bfseries}
+\titleformat*{\subparagraph}{\fontsize{12pt}{18pt}\bfseries}
+
+%to reduce separation between points in list
+\usepackage{enumitem}
+\setlist[enumerate]{nosep} % no separation between items in enumerate
+\setlist[itemize]{nosep} % no separation between items in itemize
+%use \vspace{-18pt} before list to reduce paragraph spacing between list and preceeding paragraph.
+
+%Changes for Chapter Heading Spacing and formats for numbered chapters
+\makeatletter
+\def\@makechapterhead#1{%
+	%\vspace*{50pt}% 
+	{ \centering \MakeUppercase{\ifnum \c@secnumdepth >\m@ne
+			\fontsize{16pt}{1}\bfseries \@chapapp \space \thechapter \vspace{5pt}\\
+			\fi
+			\centering \interlinepenalty\@M
+			\bfseries #1}\par\nobreak
+		%\vskip 0pt
+}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%to adjust Heading spacings and fonts For unnumbered chapters, TOC, LOF ...
+\makeatletter
+% Redefine the \chapter* header macro to remove vertical space
+\def\@makeschapterhead#1{%
+	%\vspace*{50\p@}% Remove the vertical space
+	{\newpage \parindent \z@ \raggedright
+		\normalfont
+		\interlinepenalty\@M
+		\center \fontsize{16pt}{1} \bfseries \MakeUppercase{#1}\par\nobreak
+		%\vskip 18\p@ % adjust space after heading 18pt
+}}
+\makeatother 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%to make the "figure" and "table" word appear in the list of figures (lof) and list of tables (lot) respectively ...
+\makeatletter
+\newcommand{\mycaption}[2][\@empty]% #1 = short caption (optionl), #2 = caption
+{\refstepcounter\@captype
+	\caption@caption*{\csname fnum@\@captype\endcsname{: }#2}%
+	\ifx\@empty#1
+	\addcontentsline{\csname ext@\@captype\endcsname}{\@captype}%
+	{\csname\@captype name\endcsname\space\arabic{\@captype}: #2}%
+	\else
+	\addcontentsline{\csname ext@\@captype\endcsname}{\@captype}%
+	{\csname\@captype name\endcsname\space\arabic{\@captype}: #1}%
+	\fi
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% newcommand for generating Cover Page
+\newcommand{\KECcoverpage}
+{
+	\begin{titlepage}
+		\begin{center}
+			\Large{\textbf{KANTIPUR ENGINEERING COLLEGE}}\\
+			\large{\textbf{(Affiliated to Tribhuvan University)}}\\
+			\large{\textbf{Dhapakhel, Lalitpur}}\\
+			%\vfill	%vertically fill the space 
+			\vspace{15pt}
+			\begin{figure}[h] %
+				\begin{center}
+					\includegraphics[width=25mm, height = 25mm]{images/logo.png}
+				\end{center}
+			\end{figure}
+			
+			\large{\textbf{[Subject Code:CT654 \subCode]}}\\ %Change This Line
+			\large{\textbf{A \MakeUppercase{\project} \MakeUppercase{\doc} ON}}\\ %Change This Line
+			\Large{\textbf{\MakeUppercase{\projectTitle}}}\\
+			\vfill	%vertically fill the space 
+			\vspace{8pt}
+			\large{\textbf{Submitted by:}}\\
+			\large{\textbf{\submittedBy:}}\\
+			\vfill	%vertically fill the space 
+			\vspace{8pt}
+			\ifhassupervisor % Displays Supervisor name only if \hassupervisortrue
+			\vfill	%vertically fill the space 
+			\large{\textbf{Supervised by:}}\\
+			\large{\textbf{\supervisor}}\\
+			\large{\textbf{\degSup}}\\
+			%\large{\textbf{\degSupSecondline}}\\
+			%\large{\textbf{\degSupThirdline}}
+			\fi
+			\vfill	%vertically fill the space 
+			\vspace{8pt}
+			\textbf{A \MakeUppercase{\project} SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENT FOR THE DEGREE OF \MakeUppercase{\degree}}\\
+			\vfill	%vertically fill the space 
+			\vspace{8pt}
+			\large{\textbf{Submitted to:}}\\
+			\large{\textbf{\submittedTo}}\\
+			\vfill
+			\large{\textbf{\defMonth, \defYear}}
+			\pagebreak
+		\end{center}
+	\end{titlepage}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% newcommand for generating Cover Page
+%Title Page
+
+
+\begin{document}
+	\setmainfont{Times New Roman}	
+	\setmainlanguage{english} 
+	\setotherlanguage{nepali} 
+	\newfontfamily\nepalifont[Script=Devanagari,Scale=MatchUppercase]{Nirmala UI} 
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{1em} % remove paragraph indentation
+	
+	\begin{titlepage}
+		\centering
+		
+		{\Large \textbf{KANTIPUR ENGINEERING COLLEGE}}\\
+		\textbf{(Affiliated to Tribhuvan University, IOE)}\\
+		\textbf{Dhapakhel, Lalitpur}\\[0.4cm]
+		
+		\includegraphics[width=0.3\linewidth]{photos/KEC-College-logo-2-1}\\[0.4cm]
+		
+		{\large \textbf{SUBJECT CODE: [CT654]}}\\[0.8cm]
+		
+		{\LARGE \textbf{A MINOR PROJECT MID-TERM REPORT ON}}\\[0.8cm]
+		
+		{\LARGE \textbf{NEPALI NEWS CLASSIFIER}}\\
+		
+		\vspace{1cm}
+		\begin{center}
+			\begin{tabular}{lr}
+				\multicolumn{2}{c}{\textbf{SUBMITTED BY:}} \\[0.5em]
+				\textbf{\MakeUppercase{Ajeet Patel}} & \textbf{\MakeUppercase{KAN079BCT008}} \\
+				\textbf{\MakeUppercase{Anuj Sapkota}} & \textbf{\MakeUppercase{KAN079BCT014}} \\
+				\textbf{\MakeUppercase{Ashok Nepal}} & \textbf{\MakeUppercase{KAN079BCT016}} \\
+				\textbf{\MakeUppercase{Bibek Mandal}} & \textbf{\MakeUppercase{KAN079BCT022}} \\
+			\end{tabular}
+		\end{center}
+		\vspace{1cm}
+		
+		\textbf{\MakeUppercase{A MINOR PROJECT SUBMITTED IN PARTIAL FULFILLMENT OF THE REQUIREMENT FOR THE DEGREE OF}}\\
+		\textbf{\MakeUppercase{BACHELOR IN COMPUTER ENGINEERING}}\\[0.5cm]
+		
+		\textbf{\MakeUppercase{SUBMITTED TO:}}\\
+		\textbf{\MakeUppercase{Department of Computer and Electronics Engineering}}\\
+		\textbf{\MakeUppercase{KANTIPUR ENGINEERING COLLEGE}}\\
+		
+		\vfill	
+		\textbf{JAN, 2026}
+		
+	\end{titlepage}
+	
+	\tableofcontents
+	\renewcommand{\listfigurename}{List of Figures}
+	\listoffigures
+	\renewcommand{\listtablename}{List of Tables}
+	\listoftables
+	\newpage
+	\section*{List of Abbreviations}
+	
+	\begin{tabular}{ll}
+		API & Application Programming Interface \\
+		BERT & Bidirectional Encoder Representations from Transformers \\
+		DNN & Deep Neural Network \\
+		HTML & Hypertext Markup Language \\
+		LSTM & Long Short-Term Memory \\
+		NLP & Natural Language Processing \\
+		ONNX & Open Neural Network Exchange \\
+		TF-IDF & Term Frequency--Inverse Document Frequency \\
+		XLM-R & Cross-Lingual Language Model with RoBERTa Architecture \\
+	\end{tabular}
+	
+	
+	\chapter{Introduction}
+	\section{Background}
+	With the rise of digitization, the volume of digital news articles available in Nepal across 
+	multiple channels and languages has increased tremendously. However, as content 
+	continues to be digitized, filtering and categorizing news articles for readers and agencies 
+	has become increasingly challenging. A large portion of this information is not explicitly 
+	labeled as “news,” and it is often scattered across different sources, making it difficult to 
+	retrieve relevant articles efficiently.
+	
+	To address this, online portals commonly organize content under headings such as 
+	“Political News,” “Sports News,” or “Entertainment News,” so that readers can navigate 
+	the overwhelming flow of information. However, manually categorizing news is labor
+	intensive and time-consuming, particularly as portals aggregate real-time news from 
+	multiple sources. Therefore, developing an automated system to classify Nepali articles 
+	into appropriate categories is both significant and timely.
+	
+	Automatic text classification refers to the process of assigning a class label to textual data 
+	using computational techniques. In the news domain, such systems are crucial for 
+	processing and categorizing massive amounts of information in real time. These 
+	classification approaches can also be applied to other types of documents written in Nepali 
+	text. 
+	
+	Implementing such systems for Nepali, however, poses unique challenges. The Nepali 
+	language has a rich vocabulary and complex structure, necessitating adaptations to 
+	universal text-processing methods. For instance, tokenization, punctuation removal, stop 
+	word removal, and stemming must be tailored specifically for Nepali [2], [3]. 
+	
+	Recent advancements in transformer-based language models have significantly improved 
+	text classification performance. The transformer architecture [5] introduced the self 
+	attention mechanism, which allows models to capture contextual relationships between
+	words effectively. For Nepali, models such as NepBERTa [2], Nepali Encoder 
+	Transformers [3], and other adaptations of BERT [4], [1] have demonstrated promising 
+	results for news classification. Additionally, deep neural networks (DNNs) have been 
+	successfully applied for Nepali text document classification, showing their capability to 
+	handle high-dimensional embeddings generated by transformer models [6].
+	
+	This project aims to develop an automated Nepali news classification system by combining 
+	feature extraction using NepBERTa embeddings with a DNN classifier. The dataset 
+	consists of Nepali news articles collected from public repositories such as Kaggle and 
+	GitHub, segmented into training and testing subsets. The system converts input text into 
+	numerical representations via feature extraction and leverages these embeddings to train a 
+	model capable of categorizing news into predefined classes efficiently and accurately.
+	\section{Problem Statement}
+	As more and more people became online in Nepal and digital platforms become more 
+	accessible and online consumption of news becomes more readily available for citizens 
+	across the nation. Thus, it is expected that people turn to online news portals instead of 
+	hardcopy newspapers. However, with such transition from printed newspaper to online 
+	portals, there becomes more and more text-based information which needs to be classified 
+	and categorized. 
+	
+	Unfortunately, classifying such unstructured data in Nepali manually is inefficient. It's a 
+	redundant process, it's inconsistent over time with quality and it does not fulfill real-time 
+	journalistic needs of the news portals with newspapers already in hand. Classification and 
+	categorization need to happen quickly and accurately to ensure that readers are provided 
+	with suitable articles.
+	
+	Thus, there is a critical need for a machine learning solution to automatically classify 
+	Nepali news articles. This project aims to address the need for machine-based classification 
+	of Nepali news articles.
+	\section{Objective}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item To develop a machine learning-based system that can automatically classify unstructured 
+		Nepali news articles into predefined categories. 
+	\end{enumerate}
+	\section{Features}
+	The features of the project include: 
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.} % Uppercase Roman
+		\item News Category Classification\\
+		Automatically classify news articles into categories such as Politics, Sports, 
+		Entertainment, Technology, Health, Education, etc. 
+		\item Support for Multiple News Sources\\
+		Ability to classify news from various Nepali news portals.
+	\end{enumerate}
+	\section{Application}
+	The application of this project can be listed as:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Automated News Organization \\
+		Helps news portals automatically sort and display news articles into relevant
+		categories, making it easier for readers to find content they’re interested in.
+		\item Content Moderation \\
+		Assists in filtering out inappropriate or irrelevant news content by categorizing and
+		flagging suspicious or off-topic articles.
+		\item Efficient News Summarization \\
+		Can serve as a preprocessing step in systems that summarize news by focusing on
+		specific categories.
+		\item Improved Search and Retrieval\\
+		Improves search engine performance on Nepali news websites by tagging articles
+		with categories, enabling category-based filtering.
+	\end{enumerate}
+	\section{Feasibility Analysis}
+	A feasibility analysis is crucial for determining if a project is viable and worth pursuing or
+	not.
+	\subsection{Economic feasibility}
+	This project is economically feasible because more and more people join the digital sphere
+	daily, which means more and more people can use the service. As the internet and
+	smartphones become increasingly accessible, this project doesn't need extensive hardware
+	infrastructures involvement to reduce costs. Although there will be some expenses for
+	development at the start, we believe these will be outweighed by the benefits of reaching a
+	growing online community and the decreasing costs of technology. So, overall, this project
+	looks like a good economic choice for success
+	\subsection{Technical Feasibility}
+	This project is feasible because the required coding and applications are available and well documented. The required IDEs are present and the required datasets, documents are
+	accessible via the internet. Therefore, everything needed to create the project would be
+	found from in the internet.
+	\subsection{Operational Feasibility}
+	The Nepali News Classifier functions in synergy with online news portals. Once deployed,
+	it requires minimal human intervention and facilitates almost instantaneous classification
+	without the need for human input. Thus, the media houses, news apps, and content
+	aggregators can maintain and run the program with minimal technical understanding. It
+	integrates with human efforts in news production and content management to facilitate
+	ongoing ease of use.
+	\subsection{Schedule Feasibility}
+	The schedule feasibility of this project has been assessed based on the planned tasks, available resources, and potential risks. Data collection, preprocessing, model training, evaluation, and report preparation are planned to be completed within the proposed timeframe of 9 month. Necessary resources such as datasets, computing facilities, and libraries are available, and potential delays due to large datasets or model training time have been considered. With proper task management and risk mitigation, the project is feasible within the scheduled timeline.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{"photos/gantt_chat_schedule_feasibility"}
+		\caption{Gantt Chart}
+		\label{fig:gantt-chart}
+	\end{figure}
+	
+	\section{System Requirement}
+	
+	\subsection{Hardware Requirement}
+	\begin{table}[ht]
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Processor} & Intel i5 (or equivalent) \\ 
+			\hline
+			\textbf{RAM} & 16 GB \\ 
+			\hline
+			\textbf{Storage} & 256 GB SSD (or HDD, but SSD preferred for faster processing) \\ 
+			\hline
+			\textbf{GPU} & RTX 3060 (6GB VRAM) \\ 
+			\hline
+		\end{tabularx}
+		\caption{Hardware Requirements}
+		\label{tab:system-requirements}
+	\end{table}
+	
+	\subsection{Software Requirement}
+	\begin{table}[ht]
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\textbf{Operating System} & Windows / Linux / MacOS \\ 
+			\hline
+			\textbf{Programming Language} & Python \\ 
+			\hline
+		\end{tabularx}
+		\caption{Software Environment}
+		\label{tab:software-env}
+	\end{table}
+	
+	\chapter{Literature Review}
+	Automatic text classification plays a crucial role in natural language processing, particularly for applications such as recommendation systems, information retrieval, and media monitoring. In the context of news media, the massive volume of daily content makes manual categorization impractical. Traditional approaches, including rule-based methods and lexical feature-based classifiers such as TF-IDF combined with support vector machines (SVM) or Naïve Bayes, offer fast and interpretable solutions but struggle to capture long-range dependencies and contextual nuances inherent in natural language [1]–[3]. With the exponential growth of online Nepali news, reliable automatic classification systems are essential for improving content accessibility, reducing user effort, and enhancing recommendation quality.
+	
+	Over the past decade, NLP models have evolved significantly, transitioning from classical linear classifiers to deep learning architectures capable of understanding semantic context. Early methods such as SVM and Naïve Bayes rely on hand-crafted features, which are computationally efficient but limited in representing complex linguistic patterns. Recurrent neural networks (RNNs), particularly LSTM and GRU variants, address sequential dependencies by maintaining hidden states across tokens, thereby capturing variable-length inputs [4]. However, RNNs are inherently sequential in computation, which leads to slower training and inference times and challenges with vanishing gradients for long-range dependencies. Convolutional neural networks (CNNs) have also been applied to text classification by convolving over word embeddings to extract local features [5]. While CNNs are parallelizable and effective at local pattern recognition, they struggle with long-range dependencies. The transformer architecture, introduced by Vaswani et al. [6], addresses these limitations by relying entirely on self-attention mechanisms combined with positional encoding, allowing parallel processing of all tokens and efficient modeling of long-range dependencies. Transformers have since become the backbone of modern NLP architectures.
+	
+	BERT (Bidirectional Encoder Representations from Transformers) extends the transformer encoder to produce deep bidirectional contextual embeddings [2]. BERT is pre-trained using two main objectives: masked language modeling (MLM), which predicts randomly masked tokens, and next-sentence prediction (NSP), which classifies whether a given sentence follows another. The BERT-base model consists of 12 encoder layers, each with 768-dimensional hidden states and 12 self-attention heads. Fine-tuning BERT for downstream tasks typically requires only the addition of a simple linear classification layer on top of the pre-trained embeddings. BERT has achieved state-of-the-art results on multiple benchmarks, including GLUE and SQuAD, demonstrating its capacity to model complex contextual relationships in text. RoBERTa (Robustly Optimized BERT) further improves upon BERT by removing the NSP objective, employing dynamic masking, using larger batch sizes, and adopting a byte-level BPE tokenizer [7]. These optimizations lead to consistently better performance on classification and other NLP tasks, making RoBERTa particularly suitable for robust language modeling.
+	
+	For Nepali NLP, several studies have adapted transformer-based models for news classification tasks. Kafle et al. [1] fine-tuned a multilingual BERT model on 71,970 Nepali news articles spanning 10 categories, achieving 93.3% accuracy and an F1 score of 0.936. Subsequent work by Kafle et al. [3] compared BERT and RoBERTa on the same dataset, reporting that RoBERTa outperformed BERT with an accuracy of 95.3% and an F1 score of 0.958. Sulav et al. [8] introduced NepBERTa, a BERT-based model pre-trained on a large Nepali corpus of 0.8 billion words from 36 news sites, achieving over 90% accuracy on several natural language understanding tasks such as named entity recognition (NER) and part-of-speech (POS) tagging. Maskey et al. [9] conducted a comparative analysis of auto-encoding transformers, including DistilBERT, DeBERTa, and XLM-RoBERTa, on 13 million tokens, highlighting trade-offs between speed and accuracy. These studies collectively demonstrate that transformer-based models, especially those adapted to Nepali text, significantly outperform traditional approaches such as SVMs, RNNs, and CNNs.
+	
+	Despite these advancements, several challenges remain in deploying transformer models for Nepali news classification. Full fine-tuning of large models such as BERT or RoBERTa is computationally expensive, often requiring significant hardware resources. Additionally, existing approaches typically fine-tune the entire transformer, which may be over-parameterized for classification tasks with a limited number of categories. The potential of frozen transformer embeddings as feature extractors, combined with lightweight classifiers, has not been fully explored in the Nepali context. Domain adaptation also remains a critical factor; while models such as NepBERTa provide strong general language representations, fine-tuning on news-specific corpora could further enhance classification accuracy with fewer trainable parameters.
+	
+	To address these gaps, this research proposes a hybrid architecture in which a pre-trained BERT or RoBERTa model is used as a frozen feature extractor, and the contextual embeddings are fed into a small deep neural network (DNN) for classification. This approach offers multiple advantages: it reduces training time by freezing the encoder, lowers memory requirements, and facilitates deployment on resource-constrained devices. By leveraging the high-quality representations provided by pre-trained transformers, the proposed method aims to maintain state-of-the-art accuracy while improving computational efficiency.
+	
+	In summary, the literature establishes that transformer-based models, including BERT and RoBERTa, provide superior performance for Nepali news classification compared to traditional machine learning approaches. Domain-specific adaptations, such as NepBERTa, further improve performance, highlighting the importance of pre-training on large Nepali corpora. The proposed use of a frozen transformer encoder with a lightweight DNN classifier addresses key limitations in computational efficiency and over-parameterization, offering a novel and practical approach for real-world Nepali news classification tasks.
+	
+	\chapter{Methodology}
+	\section{System Overview}
+	\begin{figure}[H]
+		\includegraphics[width=1\linewidth,height=1.2\linewidth]{photos/overviere}
+		\caption{System Overview Diagram}
+		\label{fig:System Overview}
+	\end{figure}
+	The proposed system is an automated news classification framework designed to categorize
+	news articles into predefined categories based on their textual content. The system
+	processes raw news text through a series of data preprocessing steps, including data
+	cleaning, text normalization, and tokenization, to transform unstructured text into a
+	structured format. The preprocessed data is then prepared for classification by encoding
+	labels and organizing the dataset for subsequent model training. This approach ensures that the news articles are represented in a clean and consistent manner, enabling effective and
+	reliable classification in later stages.
+	The system consists of several important modules:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Data Preparation:\\
+		Raw news data are cleaned and standardized to remove noise and
+		inconsistencies which include eliminating duplicate and incomplete records,
+		normalizing text, and tokenizing the content to prepare it for further processing.
+		\item Feature Extraction:\\
+		News text is transformed into meaningful representations that can be used by a
+		classifier. Text features, such as token embeddings, are generated.
+		\item Model Creation:\\
+		A “Feed Forward” (MLP) is created for classification of news article using the
+		text embeddings created by feature extraction
+		\item Training:\\
+		The model is trained on collected dataset for classification.
+		\item Evaluation:
+		The model is evaluated by passing new next to determine different parameters
+		like accuracy, F1score etc.
+	\end{enumerate}
+	
+	\section{Data Acquisition}
+	The dataset used for this project was obtained from the NepBERTa website, which provides
+	pre-collected Nepali news articles suitable for text classification tasks. The dataset contains
+	news articles from multiple categories, including Politics, Society, Business, Sports, World,
+	Entertainment, Health, Lifestyle, Education, and Technology. Each article consists of raw
+	textual content along with its corresponding category label, forming a structured dataset
+	for preprocessing and subsequent classification.
+	
+	Data source: \url{https://nepberta.github.io/}\\
+	Data size: 2762486
+	
+	\section{Data Analysis}
+	Data analysis was conducted to understand the characteristics and distribution of the 
+	collected news dataset. This included examining the number of articles per category, 
+	identifying majority and minority classes, and detecting potential inconsistencies or 
+	anomalies in the data. Insights from this analysis informed the preprocessing steps and 
+	ensured that the dataset was suitable for classification tasks.\\
+	\\
+	\begin{table}[h]
+		\centering
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabularx}{\textwidth}{|X|c|X|c|}
+			\hline
+			\textbf{Category} & \textbf{Count} & \textbf{Category} & \textbf{Count} \\
+			\hline
+			news & 702,151 & misc & 402,847 \\
+			\hline
+			politics & 250,668 & economy & 231,235 \\
+			\hline
+			national & 225,204 & society and security & 222,731 \\
+			\hline
+			sports & 181,227 & global & 132,451 \\
+			\hline
+			None & 110,342 & health and lifestyle & 64,775 \\
+			\hline
+			entertainment & 62,848 & thought and opinion & 56,499 \\
+			\hline
+			art and literature & 34,776 & diaspora & 31,986 \\
+			\hline
+			crime & 15,835 & science and technology & 9,469 \\
+			\hline
+			education & 8,911 & court & 5,468 \\
+			\hline
+			religious and culture & 4,815 & tourism & 4,480 \\
+			\hline
+			editorial & 3,768 & & \\
+			\hline
+			\multicolumn{3}{|l|}{\textbf{Total}} & \textbf{2,762,486} \\
+			\hline
+		\end{tabularx}
+		\caption{Category Count}
+	\end{table}
+	\\
+	\\
+	\\
+	\\
+	Here, from above categories we can clearly see the class imbalance between the categories
+	like politics, misc, news and religious culture, tourism etc. This class imbalance could
+	potentially bias a classification model toward majority classes. Identifying these disparities
+	at this stage allows for informed decisions in later preprocessing and model training, such
+	as applying class-weighted loss or resampling techniques to mitigate imbalance effects.
+	
+	\section{Data Preprocessing}
+	\subsection{ Data Cleaning}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Removing Null or Empty Rows:\\
+		Null values or blank text fields cannot be used for training so rows where the article
+		text or label is missing are removed. It ensures the model only sees valid training
+		samples.
+		\item Removing Duplicate Entries:\\
+		Duplicate news articles can bias the model and cause overfitting because the same
+		sentence appears multiple times. Due to duplicates entries model memorizes text
+		instead of learning patterns. So, we remove duplicates to make the dataset balanced
+		and fair.
+		\item Irrelevant column elimination:\\
+		Columns that do not contribute to the classification task were removed from the
+		dataset. These typically include metadata such as URLs, timestamps, authors, or
+		other identifiers that are not relevant to the textual content. Eliminating such
+		12 columns reduces noise, simplifies the dataset, and ensures that the classification
+		model focuses only on meaningful textual features.
+		\item HTML Tag Removal:\\
+		HTML tag removal means cleaning text that contains HTML formatting symbols
+		like <p>, <div>, <br>, <b>, etc. These tags appear when text is copied from
+		webpages, blogs, CMS, online articles, or exported documents. Even we don’t
+		scrape the data, such tags still come along with the content, so we remove them to
+		make the text clean and readable.
+		
+		Before removing:"<p>{\nepalifont नेपाल राम्रो देश हो} </p>"\\
+		After removing:"{\nepalifont नेपाल राम्रो देश हो}"\\
+		\item {Unicode Normalization:}\\
+		{\nepalifont
+			Nepali text may contain multiple Unicode representations of the same character.
+			For example, some characters appear as a combined symbol while others appear as
+			two separate Unicode points like ``क़'' and ``क'' + ``़''.
+		}
+		\par
+		Before normalization: {\nepalifont क + ़}
+		\par
+		After normalization: {\nepalifont क़}
+		\par
+		So, normalization converts all variations into one unified, standard form.
+		It prevents treating similar words as different and reduces duplicates in vocabulary.
+		\item Whitespace Removal:\\
+		Whitespace removal means deleting unnecessary spaces, tabs, or line breaks from
+		text. Extra spaces can cause errors in tokenization, matching, and text processing,
+		so removing them makes the text more consistent and well-formatted
+		
+		Before removing:\nepalifont " नेपाल राम्रो छ "\\
+		After removing:\nepalifont "नेपाल राम्रो छ"
+		\\
+		\item Handling special characters:\\
+		Special characters such as symbols, emojis, and punctuation marks that do not
+		contribute to the news classification task were removed from the text. This step
+		helps reduce noise in the dataset, ensures cleaner tokenization, and allows the
+		model to focus on meaningful textual content.
+		
+		\item Stopword removal:\\
+		NepBERTa is built on top of the BERT architecture, which use contextual
+		embeddings that understand the role of every word in a sentence. Common Nepali
+		words such as को, ले, कक, र, मा, or पकन which are considered stopwords in nepali actually
+		provide important grammatical and semantic information. Removing them may
+		distort the meaning of the sentence, which can reduce model accuracy.\\
+		Original sentence: "प्रधानमन्त्रीलेसंसदमा प्रस्ताव पेश गरे।"\\
+		After removing stopwords: "प्रधानमन्त्री संसदमा प्रस्ताव पेश गरे"\\
+		In above example, sentence loses important context about who performed the
+		action.
+		
+	\end{enumerate}
+	\subsection{Category Cleaning and Standardization}
+	During data preprocessing, category labels were cleaned and standardized to ensure consistency across the dataset. News articles collected from multiple sources contained variations in category naming, punctuation, and formatting. Categories with similar semantic meaning were merged under a unified label to reduce redundancy and improve classification performance.
+	\begin{table}[h!]
+		\centering
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabularx}{\textwidth}{|X|r|}
+			\hline
+			\textbf{Category} & \textbf{Count} \\
+			\hline
+			Politics \& Governance & 70000 \\
+			Sports & 55000 \\
+			Arts, Culture \& Lifestyle & 45000 \\
+			Opinion, Thought \& Media & 50000 \\
+			Economy \& Business & 55000 \\
+			World \& International & 45000 \\
+			Health, Science \& Technology & 45000 \\
+			Society \& Public Affairs & 60000 \\
+			Diaspora \& Migration & 25000 \\
+			\hline
+			\textbf{Total} & \textbf{450000} \\
+			\hline
+		\end{tabularx}
+		\caption{Row Counts per Category}
+	\end{table}
+	
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{photos/dataset distribution.v2png}
+		\caption{Category Distribution}
+		\label{fig:dataset-distribution}
+	\end{figure}
+	
+	
+	\section{Tokenization}
+	Tokenization is the process of breaking text into smaller units called tokens. Tokens can be
+	words, subwords, or characters depending on the model.
+	
+	It is a crucial step in natural language processing because it transforms raw text into
+	smaller, manageable units called tokens that a model can understand. NLP models,
+	including BERT and NepBERTa, cannot directly process plain text, they require input in
+	the form of tokens, which are then converted into numerical embeddings. It also allows the
+	model to deal with rare or unseen words by breaking them into subwords, preventing outof-vocabulary issues.
+	\subsection{Subword Tokenization strategy}
+	Subword tokenization was applied to divide words into smaller meaningful units, allowing
+	the model to handle rare or out-of-vocabulary (OOV) words effectively. This approach
+	ensures that even previously unseen words can be represented through combinations of
+	known subwords, improving the model’s ability to understand and classify Nepali news
+	text accurately.
+	
+	Original sentence:\\
+	\nepalifont "नेपाल एक सुन्त्दर देश हो।"
+	
+	Tokanized:\\
+	\nepalifont "नेपाल, एक, सु\#\# न्त्दर,देश,हो।" \\
+	Here, \#\# indicates a continuation of a subword from the previous token.
+	\normalfont
+	\subsection{Padding and Truncation}
+	Padding is the process of adding extra tokens to make all input sequences the same length.
+	NLP models require input sequences in a fixed size because they process data in batches.
+	Since sentences naturally have different lengths, shorter sentences are “padded” with
+	special [PAD] tokens to match the maximum sequence length in the batch.
+	[PAD] is ignored during model processing using an attention mask.\\
+	Example:
+	
+	\nepalifont काठमाडौँराजधानी हो।\\
+	Let, the maximum length in the batch is 5
+	
+	Tokanized:\\
+	\nepalifont ['काठमाड ौँ', 'राजधानी', 'हो', '।']
+	
+	After Padding:\\
+	\nepalifont['काठमाड ौँ', 'राजधानी', 'हो', '।', '[PAD]'
+	\normalfont
+	\section{Model Architecture}
+	A pre-trained transformer model is used with a classification head (a fully connected layer
+	followed by softmax).
+	
+	The model consists of two main components: the NepBERTa feature extractor and a
+	Dense Neural Network classifier. NepBERTa first transforms the input Nepali text into a
+	fixed-size dense vector. This vector is then passed to a fully connected dense layer,
+	followed by a softmax activation function that gives output of probabilities for each
+	predefined category. The softmax layer ensures that the sum of all predicted class
+	probabilities equals one, enabling clear classification decisions. This end-to-end
+	architecture allows the model to learn both linguistic features and decision boundaries in a
+	single pipeline. 
+	\subsection{NepBERTa}
+	NepBERTa is a transformer-based language model trained specifically on Nepali which is
+	biased on RoBERTa Model. RoBERTa is a transformer-based deep learning model that
+	learns contextual representations of text by looking at both left and right context
+	simultaneously. In our system, NepBERTa serves as the feature extractor, transforming
+	raw Nepali news text into high-dimensional dense vectors (typically of size 768). These
+	embeddings capture the semantic meaning of the entire text, taking into account grammar,
+	syntax, and contextual relationships between words.
+	
+	Example:
+	
+	\nepalifont Input:"प्रधानमन्त्रीलेसम्बोधनगरे "\\
+	Output: 768-dimensional contextual vector (numeric)
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.60\linewidth]{photos/bert}
+		\caption[BERT Model]{BERT Model Architecture}
+		\label{fig:BERT_Model}
+		\vspace{0.5em} % optional space before source
+		\small Source: \url{https://l1nq.com/2uleA}
+	\end{figure}
+	\subsection{Transformer Architecture Basics}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Encoder Structure\\
+		The transformer encoder consists of stacked layers, each with two main
+		components:
+		\begin{enumerate}
+			\item Self-Attention Mechanism\\
+			Self-attention allows each token to attend to all other tokens in a sequence.\\
+			The steps are:\\
+			Compute Query (Q), Key (K), and Value (V) vectors for each token using
+			learnable weight matrices:
+			\begin{eqnarray}
+				Q = X W^Q \\
+				K = X W^K \\
+				V = X W^K
+			\end{eqnarray}
+			where:\\
+			X is the input matrix of n tokens
+			$W^Q$,$W^K$,$W^V$ are learnable parameters
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{"nepberta file/self-attention-matrix-calculation"}
+				\caption[Attention Matrix]{Attention Matrix}
+				\label{fig:self-attention-matrix-calculation}
+				\vspace{0.5em} % optional space before source
+				\small Source: \url{https://jalammar.github.io/illustrated-transformer/}
+			\end{figure}
+			\item Feed-Forward Network (FFN)\\
+			Each encoder layer also contains a position-wise FFN applied to each token
+			independently:
+			\begin{align}
+				\mathrm{FFN}(x) &= \mathrm{ReLU}(x W_1 + b_1) W_2 + b_2
+			\end{align}
+			where W1, W2 and b1, b2 are learnable parameters.
+		\end{enumerate}
+		\item Positional Encoding\\
+		Transformers do not process tokens sequentially like RNNs, so positional
+		information must be added to input embeddings to indicate the order of words in a sentence. This is done using Positional Encoding (PE).\\
+		For each position pos and embedding dimension i, the positional encoding is
+		defined as:
+		\begin{align}
+			PE_{(POS,2i)} &= \sin(\frac{pos}{10000^{2i/dmodel}}) \\
+			PE_{(POS,2i+1)} &= \cos(\frac{pos}{10000^{2i/dmodel}})
+		\end{align}
+		\textbf{How it works?}\\
+		Even dimensions use sine, odd dimensions use cosine. Each position gets a unique
+		combination of sinusoids, allowing the model to distinguish token positions.
+		Positional encodings are added to token embeddings before entering the encoder.
+		This ensures that the transformer knows the order of tokens while still allowing
+		parallel processing.
+		\item Token Embeddings\\
+		Token embeddings represent each input token as a dense numerical vector that
+		captures its semantic meaning. In NepBERTa, text is first split into subword
+		tokens using a subword tokenization strategy, and each token is mapped to a
+		fixed-dimensional embedding vector.
+		\\
+		\item Contextual Embeddings\\
+		Contextual embeddings represent tokens in a sentence by incorporating
+		information from surrounding tokens, allowing the same word to have different
+		representations depending on its context. In NepBERTa, contextual embeddings
+		are produced by passing token embeddings through multiple transformer
+		encoder layers.\\ 
+	\end{enumerate}
+	
+	\subsection{Embeddings}
+	Embeddings are numerical representations of data, such as words, sentences, or images, that capture their meaning in a mathematical form. By converting raw data into vectors, embeddings allow computers to understand similarity and relationships items with similar meanings have vectors that are close to each other. They are widely used in machine learning tasks like search, recommendation systems, clustering, and natural language processing because they help models work with complex, unstructured data more effectively.\\
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item How Embeddings are generated?\\
+		Step 1: Tokenization:\\
+		The input text is split into tokens or subwords.\\
+		Input: \nepalifont"नेपाल सुन्दर देश हो।"\\
+		Tokenized: \nepalifont['नेपाल', 'सु'\#\#न्दर', 'देश', 'हो', '।']\\
+		
+		Step 2: Token IDs\\
+		Each token is mapped to a unique integer ID from the model’s vocabulary.\\
+		\nepalifont['नेपाल', 'सु','\#\#न्त्दर', 'देश', 'हो', '।']\\
+		->[101, 1234, 5678, 2345, 3456, 102]\\
+		
+		Token IDs are fixed for known tokens i.e. If a word (or subword) is already in
+		NepBERTa’s vocabulary, it always maps to the same token ID. If the word is not in
+		the vocabulary, it will be split into subwords, each with its own ID. so original word
+		does not have a single ID, but the sequence of subword IDs.\\
+		
+		Step 3: Embedding Lookup\\
+		The model has a embedding matrix (size: vocabulary × embedding dimension). For
+		each token ID, we pick the corresponding row from the embedding matrix and this
+		process is called embedding lookup. Words that are not in the model’s vocabulary
+		are splitted into smaller subwords that are in the vocabulary.\\
+		
+		Step 4: Positional Embedding\\
+		Transformers like BERT or NepBERTa cannot inherently understand the order of
+		words in a sentence because they process all tokens in parallel. Positional Encoding
+		is a way to inject information about token positions into the embeddings. It tells the
+		model “this token is first, this one is second, etc.”, which is crucial for
+		understanding sentence structure and meaning.\\
+		
+		Final embedding = Token embedding + Positional embedding\\
+		
+		For Example:\\
+		"नेपाल राजधानी हो" and "राजधानी नेपाल हो" have the same words but different meanings.\\
+		
+		In above example:\\
+		Even though both sentences have the same tokens, the positional embeddings are
+		different because the order is different, so model can understand that “नेपाल राजधानी हो”
+		$\neq$ “राजधानी नेपाल हो”.\\
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{nepberta file/transformer_positional_encoding_example.png}
+			\caption{Positional Encoding}
+			\label{fig:transformer-positional-encoding-example}
+			\vspace{0.5em} % optional space before source
+			\small Source: \url{https://jalammar.github.io/illustrated-bert/}
+		\end{figure}
+		Step 5: Contextualization via Transformer Layers\\
+		After token embeddings are combined with positional embeddings, the model
+		passes them through transformer layers. Contextualization means that each token’s
+		embedding is adjusted based on the other tokens in the sentence. Thus, the final
+		embedding of a token captures not just its meaning, but also its meaning in context.\\
+		
+		Example: Sentence "नेपाल राजधानी हो"\\
+		Token Initial Embedding (e+p)\\
+		After Contextualization (final embedding)\\
+		नेपाल \hspace{2.4cm}e0+p0 = e0’ (adjusted based on “राजधानी” \& “हो”)\\
+		राजधानी \hspace{2cm}e1+p1 = e1’ (adjusted based on “नेपाल” \& “हो”)\\
+		हो \hspace{2.9cm}	e2+p2 = e2’(adjusted based “नेपाल”\& “राजधानी”)\\
+		As the embedding is depend on other token in the sentence one word can have two
+		different embeddings in two different sentences.\\
+		
+		Step 6: Output Embeddings\\
+		Output embeddings are the final contextual vector representations of each token\\
+		\item Benefits of Embedding over Traditional Feature Extraction:
+		\begin{enumerate}
+			\item Understands Meaning (Semantic Understanding).
+			\item Traditional methods create huge vectors (up to 10,000+ dimensions).
+			\item Embeddings use small dense vectors (768 dimensions).
+			\item Same word can have different vectors depending on the sentence.
+			\item Embeddings show closeness between related words:\\
+			“नेपाल” → “काठमाड ौँ” closer\\
+			“रोग” → “स्वास््य” closer
+			\item Models like BERT/NepBERTa already learned from large datasets.
+		\end{enumerate}
+	\end{enumerate}
+	\subsection{Dense Neural Network Classifier}
+	On top of the embeddings generated by NepBERTa, we added a simple feedforward neural
+	network (MLP), also known as a Dense layer, followed by a softmax activation function.
+	This layer serves as the classifier that maps the semantic vector to a fixed number of output
+	categories (e.g., Politics, Sports, Business, Entertainment, etc.)
+	
+	Multi-Layer Perceptron (MLP) consists of fully connected dense layers that transform
+	input data from one dimension to another. It is called multi-layer because it contains an
+	input layer, one or more hidden layers and an output layer. The purpose of an MLP is to
+	model complex relationships between inputs and outputs
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Architecture of MLP\\
+		The Multi-Layer Perceptron (MLP) is used as the final classification component in
+		the proposed system. It takes the contextual embeddings generated by NepBERTa
+		as input and maps them to predefined news categories.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{photos/images}
+			\caption[MLP Architecture]{MLP Architecture}
+			\label{fig:MLP-Diagram}
+			\vspace{0.5em} % optional space before source
+			\small Source: \url{https://tinyurl.com/adakhjya}
+		\end{figure}
+		\begin{enumerate}
+			\item Input Layer\\
+			Receives the sentence-level embedding (e.g., the [CLS] token embedding)
+			produced by NepBERTa. The input dimension is equal to embeddings size.
+			\item Hidden Layers\\
+			There are One or more fully connected (dense) layers
+			Each applies a linear transformation function followed by linear
+			transformation funtion.
+			These layers learn discriminative patterns from the extracted features.
+			\item Output Layer\\
+			A fully connected layer with neurons equal to the number of news
+			categories is output layer.
+			It uses the Softmax activation function to produce class probability
+			distributions
+		\end{enumerate}
+		\item Activation Function\\
+		Activation functions introduce non-linearity into the Multi-Layer Perceptron
+		(MLP), enabling the network to learn complex patterns from the input features. In
+		this project, different activation functions are used at different layers of the network.
+		\begin{enumerate}
+			\item ReLU (Rectified Linear Unit):\\
+			ReLU is applied in the hidden layers of the MLP to allow efficient training
+			and mitigate the vanishing gradient problem. It is defined as:
+			\begin{align}
+				\mathrm{ReLU}(x)=\mathrm{Max}(0,x)
+			\end{align}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{photos/screenshot001}
+				\caption[ReLU]{ReLU Activation Function}
+				\label{fig:screenshot001}
+				\vspace{0.5em} % optional space before source
+				\small Source: \url{https://tinyurl.com/5998a3vj}
+			\end{figure}
+			
+			\item Softmax:\\
+			The Softmax function is used in the output layer to convert the network’s
+			outputs into a probability distribution over the news categories:
+			\begin{align}
+				softmax=\frac{e^{z_i}}{\sum_{j=1}^{c}e^j}
+			\end{align}
+			where:\\
+			C is the number of classes. The class with the highest probability is selected as the predicted category.
+			\\
+			\\
+			\\
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{photos/softmax}
+				\caption[Softmax]{Softmax Function Graph}
+				\label{fig:softmax}
+				\vspace{0.5em} % optional space before source
+				\small Source: \url{https://l1nq.com/rbRRo}
+			\end{figure}
+			
+		\end{enumerate}
+		
+		\item Forward Propagation\\
+		Forward propagation describes the process by which input features pass through
+		the layers of the Multi-Layer Perceptron (MLP) to produce an output prediction.
+		In this project, the MLP receives contextual embeddings generated by NepBERTa
+		and processes them through a sequence of fully connected layers.
+		Given an input embedding vector x, the output of each hidden layer is computed
+		as:
+		\begin{align}
+			H = \mathrm{f}(W * h + b)
+		\end{align}
+		where:\\
+		W and b are the weight matrix and bias vector of layer l.
+		F(⋅)is the activation function (ReLU)
+		After passing through the hidden layers, the output layer computes class
+		probabilities using the Softmax function.
+		\\
+		\\
+		\\
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{"photos/forward propagation"}
+			\caption[Forward Propagation]{Forward Propagation}
+			\label{fig:forward_propagation}
+			\vspace{0.5em} % optional space before source
+			\small Source: \url{https://www.mdpi.com/2079-9292/14/23/4718}
+		\end{figure}
+		\item Loss Function\\
+		The loss function measures the difference between the predicted class probabilities
+		and the true class labels during model training. For the multi-class news
+		classification task, categorical cross-entropy loss is used, as it is well suited for
+		classification problems with more than two classes.
+		Given the true label y and the predicted probability distribution the loss is defined
+		as:
+		\begin{align}
+			L=\sum_{i=1}^{c}y_i\log(y_i)
+		\end{align}
+		\item Backward propagation\\
+		Backward propagation (backpropagation) is the algorithm used to train neural networks by minimizing prediction error. After a forward pass, the error is computed using a loss function, for example Mean Squared Error (MSE)
+		\begin{align}
+			L=\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y_i})^2
+		\end{align}
+		The algorithm then applies the chain rule to propagate this error backward through the network and compute gradients. For a neuron, the weighted sum is
+		\begin{align}
+			z=\mathrm{w} \cdot \mathrm{x}+b
+		\end{align}
+		and the output after applying an activation function f is
+		\begin{align}
+			a=\mathrm{f}(z)
+		\end{align}
+		The gradient of the loss with respect to the weights is
+		\begin{align}
+			\frac{\partial L}{\partial W}=\dfrac{\partial L}{\partial a} \cdot \frac{\partial a}{\partial z}\cdot \frac{\partial z}{\partial w}
+		\end{align}
+		Finally, the weights are updated using gradient descent:
+		\begin{align}
+			w_{new}=w_{old}-\eta	\frac{\partial L}{\partial W}
+		\end{align}
+		where:\\ 
+		$\eta$ is the learning rate. This process is repeated for many iterations until the loss is minimized and the network learns meaningful patterns from the data.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{photos/screenshot002}
+			\caption[Backward Propagation]{Backward-propagation}
+			\label{fig:backward-propagation}
+			\vspace{0.5em} % optional: adds a small space before the source
+			\small Source: \url{https://sl1nk.com/7UGYE}
+		\end{figure}
+		
+	\end{enumerate}
+	
+	\chapter{Result and Discussion}
+	\section{Work Completed}
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item Data Collection and Preparation\\	
+		A large-scale Nepali news dataset was collected from specified source. The dataset was organized into predefined categories such as Politics \& Governance, Economy \& Business, Sports,Arts, Culture \& Lifestyle,etc. Duplicate and noisy samples were removed to improve data quality. 
+		\item Text Preprocessing and Normalization\\
+		Nepali text preprocessing techniques were implemented, including Unicode normalization, removal of unnecessary symbols, tokenization, and text cleaning. This ensured consistency in text representation and improved model performance.
+		\item Label Encoding and Dataset Splitting\\
+		News categories were encoded into numerical labels for model training. The dataset was divided into training, validation, and test sets to enable proper evaluation and avoid overfitting.
+		\item Model Selection and Architecture Design\\
+		A transformer-based architecture inspired by RoBERTa (NepBERTa) was selected for the feature extraction and a DNN was implemented for classification.
+		\item Model Training and Optimization\\
+		The model was trained with the help of PyTorch with appropriate loss functions and optimizers. Techniques such as class weighting, early stopping, and learning rate scheduling were applied to improve generalization and handle class imbalance.
+		\item Performance Evaluation\\
+		The trained model was evaluated using metrics such as accuracy, precision, recall, and F1-score. Detailed classification reports were generated to analyze category-wise performance.
+	\end{enumerate}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{"photos/final f1 score"}
+		\caption{Performance Evaluation}
+		\label{fig:final-f1-score}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{"photos/Screenshot 2026-02-06 183250"}
+		\caption{Confusion Matrix}
+		\label{fig:confusion-matrix}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{photos/loss}
+		\caption{Train VS Validation Loss}
+		\label{fig:loss}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{photos/accuracy}
+		\caption{Train VS Validation Accuracy}
+		\label{fig:accuracy}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{photos/output}
+		\caption{Output}
+		\label{fig:output}
+	\end{figure}
+	
+	
+	\section{Work Remaining}
+	Although the proposed model achieves satisfactory performance, further improvement in classification accuracy can be obtained by increasing the size and diversity of the training dataset. Hyperparameter tuning, improved handling of class imbalance.The system can be deployed as a web-based or mobile application to allow real-time news classification for end users.
+	\chapter{Epilogue}
+	As we conclude this project proposal for the Nepali News Classifier employing NepBERTa 
+	and Deep Neural Networks, Natural language processing (NLP) has the chance to make a 
+	big difference for languages that don’t have a lot of digital tools. This project will not only 
+	validate academic excellence, but also manifest in reality in order to advocate for 
+	accessibility of information, enhance digital literacy and empower citizens, businesses and 
+	institutions across the nation of Nepal. 
+	
+	As this has classifier become a reality, it will unlock opportunities that have been 
+	previously inaccessible. It will enable journalists to quickly classify breaking news in order 
+	to disseminate it to the public. It will allow future researchers to find relevant articles in 
+	extensive archives without feeling overwhelmed. It will adjust how citizens view the 
+	expanding Internet.
+	
+	In addition, this project's results will result in more than just a nascent classifier after 
+	experimentation. There are opportunities for future collaborations downward the road as 
+	well. For example, the classifier could also be trained on data streams from trending 
+	websites or additional classification categories beyond the proposed nuances. 
+	
+	This project lays the foundation for what artificial intelligence can do for an educated 
+	intercultural nation. The classifier will not only make classifications more effortless, but 
+	also help Nepalis better appreciate the emerging news themes they're faced with daily. With 
+	a careful strategic plan as described above, we are assured that this classifier will create a 
+	much-needed tool for effective learning and evolution within the country.
+	\renewcommand{\bibname}{References}
+	\begin{thebibliography}{99}
+		
+		\bibitem{nemkul2024}
+		K.~Nemkul and S.~Basnet,
+		``Use of BERT and RoBERTa for Nepali news classification,''
+		\textit{Tribhuvan University Journal},
+		vol.~40, no.~1, pp.~112--122, 2024.
+		[Online]. Available:
+		\url{https://nepjol.info/index.php/TUJ/article/view/66679}
+		
+		\bibitem{timilsina2022}
+		S.~Timilsina, P.~Gautam, S.~Karki, and A.~Shrestha,
+		``NepBERTa: Nepali language model trained in a large corpus,''
+		in \textit{Proceedings of the 3rd Workshop on Asian Translation (WAT2022)},
+		2022, pp.~123--132.
+		[Online]. Available:
+		\url{https://aclanthology.org/2022.aacl-short.34}
+		
+		\bibitem{maskey2022}
+		U.~Maskey, S.~Karki, and M.~Bhattarai,
+		``Nepali encoder transformers: An analysis of auto-encoding transformer language models for Nepali text classification,''
+		in \textit{Proceedings of the 1st Workshop on SIGUL},
+		2022, pp.~92--99.
+		[Online]. Available:
+		\url{https://aclanthology.org/2022.sigul-1.14}
+		
+		\bibitem{kafle2022}
+		P.~Kafle, A.~Adhikari, and M.~Shrestha,
+		``Improving Nepali news classification using BERT,''
+		in \textit{Proceedings of the International Conference on Artificial Intelligence and Smart Systems (ICAIS)},
+		Springer, 2022, pp.~389--400.
+		[Online]. Available:
+		\url{https://doi.org/10.1007/978-981-19-1653-3_36}
+		
+		\bibitem{vaswani2017}
+		A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N.~Gomez,
+		{\L}.~Kaiser, and I.~Polosukhin,
+		``Attention is all you need,''
+		in \textit{Advances in Neural Information Processing Systems},
+		vol.~30, 2017.
+		[Online]. Available:
+		\url{https://arxiv.org/abs/1706.03762}
+		
+		\bibitem{subba2019}
+		S.~Subba, D.~Paudel, and R.~Shahi,
+		``Nepali text document classification using deep neural network,''
+		\textit{Tribhuvan University Journal},
+		vol.~34, no.~1, pp.~55--65, 2019.
+		[Online]. Available:
+		\url{https://nepjol.info/index.php/TUJ/article/view/28677}
+		
+	\end{thebibliography}
+	
+\end{document}
+

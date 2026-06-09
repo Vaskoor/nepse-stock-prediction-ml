@@ -1,0 +1,79 @@
+
+============================================================
+  NBL MAX PROFIT v5.2 -- FULL EVALUATION REPORT
+============================================================
+============================================================
+  TARGET DEFINITION (v5.2 Triple-Barrier)
+============================================================
+  Horizon   : 10 trading days forward
+  Threshold : 1.5% minimum absolute move
+  UP  (1)   : future_10d_return >  +1.5%
+  DOWN (0)  : future_10d_return <  -1.5%
+  Dropped   : |future return| <= 1.5% (ambiguous)
+
+============================================================
+  5-FOLD TIME-SERIES CROSS-VALIDATION (Training Data)
+============================================================
+  CV F1 Scores  : [0.6282 0.6201 0.417  0.5438 0.4267]
+  Mean CV F1    : 0.5271
+  Std  CV F1    : 0.0910
+
+============================================================
+  TRAIN SET METRICS
+============================================================
+  Accuracy              : 0.6721  (67.21%)
+  F1-Score (Macro)      : 0.6719
+  F1-Score (Weighted)   : 0.6718
+  Matthews Corr Coef    : 0.3455  Good
+  Cohen's Kappa         : 0.3446
+  ROC-AUC               : N/A
+
+  Per-Class Report:
+              precision    recall  f1-score   support
+
+     DOWN(0)       0.66      0.71      0.68       820
+       UP(1)       0.69      0.64      0.66       836
+
+    accuracy                           0.67      1656
+   macro avg       0.67      0.67      0.67      1656
+weighted avg       0.67      0.67      0.67      1656
+
+============================================================
+  VALIDATION SET METRICS
+============================================================
+  Accuracy              : 0.5362  (53.62%)
+  F1-Score (Macro)      : 0.4811
+  F1-Score (Weighted)   : 0.4761
+  Matthews Corr Coef    : 0.1260  Weak
+  Cohen's Kappa         : 0.0904
+  ROC-AUC               : N/A
+
+  Per-Class Report:
+              precision    recall  f1-score   support
+
+     DOWN(0)       0.51      0.89      0.65       134
+       UP(1)       0.66      0.20      0.31       142
+
+    accuracy                           0.54       276
+   macro avg       0.59      0.55      0.48       276
+weighted avg       0.59      0.54      0.48       276
+
+============================================================
+  TEST SET METRICS
+============================================================
+  Accuracy              : 0.5797  (57.97%)
+  F1-Score (Macro)      : 0.5796
+  F1-Score (Weighted)   : 0.5794
+  Matthews Corr Coef    : 0.1614  Weak
+  Cohen's Kappa         : 0.1608
+  ROC-AUC               : 0.5696
+
+  Per-Class Report:
+              precision    recall  f1-score   support
+
+     DOWN(0)       0.56      0.61      0.59       134
+       UP(1)       0.60      0.55      0.57       142
+
+    accuracy                           0.58       276
+   macro avg       0.58      0.58      0.58       276
+weighted avg       0.58      0.58      0.58       276

@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Uploads and temporary files
+uploads/
+*.tmp
+
+# Large binary outputs (optional – remove if you want to include them)
+*.png
+*.pdf
+*.pkl
+
+# Environment and logs
+.env
+*.log
+
+# IDE folders
+.vscode/
+.idea/

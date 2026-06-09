@@ -1,0 +1,38 @@
+{
+  "features": [
+    "return",
+    "return_lag_1",
+    "return_lag_2",
+    "return_lag_3",
+    "vol_change",
+    "vol_change_lag_1",
+    "rsi_14",
+    "rsi_14_lag_1",
+    "rsi_14_lag_2",
+    "ADX_14",
+    "ADX_14_lag_1",
+    "ema_cross",
+    "ema_cross_lag_1",
+    "bb_width",
+    "bb_width_lag_1",
+    "high_low_pct",
+    "close_open_ratio",
+    "atr_14_pct",
+    "momentum_5_pct",
+    "macd_hist_pct",
+    "volatility_ratio",
+    "BB_pct",
+    "Stoch_K",
+    "rsi_momentum_3d",
+    "adx_momentum_3d",
+    "bbw_momentum_3d",
+    "macd_accel_pct"
+  ],
+  "thresholds": {
+    "buy": 0.51,
+    "sell": 0.41000000000000003
+  },
+  "fee": 0.003,
+  "target_horizon": 10,
+  "target_threshold": 0.015
+}

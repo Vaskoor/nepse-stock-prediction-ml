@@ -1,0 +1,12 @@
+
+============================================================
+  BACKTEST RESULTS (Out-of-Sample Test Set)
+============================================================
+  Starting Capital  : NPR   100,000.00
+  Final Value       : NPR   132,940.90
+  Total Return      :   +32.94%
+  Total Trades      : 8
+  Win Rate          : 37.5%
+  Sharpe Ratio      : 2.856  Warning: Low sample (< 30 trades)
+  Max Drawdown      : -16.66%
+============================================================
